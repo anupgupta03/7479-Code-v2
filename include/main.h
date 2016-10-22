@@ -1,6 +1,6 @@
 /** @file main.h
  * @brief Header file for global functions
- * 
+ *
  * Any experienced C or C++ programmer knows the importance of header files. For those who
  * do not, a header file allows multiple files to reference functions in other files without
  * necessarily having to see the code (and therefore causing a multiple definition). To make
@@ -44,11 +44,30 @@
 #define MAIN_H_
 
 #include <API.h>
+#include <math.h>
+#include "UserDefinitions.h"
+#include "slewRateController.h"
+#include "motorControlFunctions.h"
+
+//#include "slewRateController.h"
+//#include "OdometricLocalizer.h"
+
 
 // Allow usage of this file in C++ programs
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+extern int g_IntakeForkState;
+extern int g_LiftLeftEncoder;
+extern int g_LiftRightEncoder;
+extern int g_BaseLeftEncoder;
+extern int g_BaseRightEncoder;
+extern Gyro mainGyro;
+extern _Bool LIFT_SLEW_CONTROL_ENABLED;
+extern _Bool BASE_SLEW_CONTROL_ENABLED;
+extern _Bool g_shouldResetSensors;
 
 //#define AUTO_DEBUG
 
