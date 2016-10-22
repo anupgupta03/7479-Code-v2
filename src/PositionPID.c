@@ -88,4 +88,3 @@ int pos_PID_StepController(pos_PID *pid)
 
   return pid->outVal;
 }
-

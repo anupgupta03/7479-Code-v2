@@ -1,50 +1,49 @@
 #ifndef ODOMETRICLOCALIZER_H_INCLUDED
 #define ODOMETRICLOCALIZER_H_INCLUDED
-
+#include <API.h>
+#include "../src/UserDefinitions.h"
 // Types of encoders that can be used
 typedef enum t_EncoderTypes {
-	IME, Optical
+    IME, Optical
 } EncoderTypes;
 
 // Position struct
 typedef struct t_Pose {
-	// X-Coordinate
-	float x;
-	// Y-Coordinate
-	float y;
-	// Heading
-	float h;
+    // X-Coordinate
+    float x;
+    // Y-Coordinate
+    float y;
+    // Heading
+    float h;
 } Pose;
 
 typedef struct t_OdometricLocalizer {
-	// Type of encoder being measured
-	EncoderTypes encoderType;
+    // Type of encoder being measured
+    EncoderTypes encoderType;
 
-	// Previous Encoder Counts
-	int previousLeftCounts;
-	int previousRightCounts;
+    // Previous Encoder Counts
+    int previousLeftCounts;
+    int previousRightCounts;
 
-	// Sensors attached to the axle of revolution
-	int LeftEncoder_port;
-	int RightEncoder_port;
+    // Sensors attached to the axle of revolution
+    Encoder leftEncoder;
 
-	// Distance travelled per count (inches)
-	float distancePerCount;
+    Encoder rightEncoder;
 
-	// Radians per encoder count
-	float radiansPerCount;
+    // Distance travelled per count (inches)
+    float distancePerCount;
 
-	// Current X Coordinate
-	float xPos;
+    // Radians per encoder count
+    float radiansPerCount;
 
-	// Current Y Coordinate
-	float yPos;
+    // Current X Coordinate
+    float xPos;
 
-	// Current Heading
-	float heading;
+    // Current Y Coordinate
+    float yPos;
 
-	bool leftFlip;
-	bool rightFlip;
+    // Current Heading
+    float heading;
 
 } OdometricLocalizer;
 
@@ -61,9 +60,6 @@ int getEncoderReading(OdometricLocalizer *odo, Direction side);
 void step_OdometricLocalizer(OdometricLocalizer *odo);
 
 // Initializes an OdometricLocalizer with provided parameters and does init math
-int init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type,
-		int leftEncoder, int rightEncoder, float wheelDiameter,
-		float trackWidth, float countsPerRevolution, bool leftFlipped,
-		bool rightFlipped);
+int init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type, float wheelDiameter,	float trackWidth, float countsPerRevolution);
 
 #endif //ODOMETRICLOCALIZER_H_INCLUDED

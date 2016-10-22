@@ -18,78 +18,75 @@
 #include "main.h"
 //#include "motorControlFunctions.h"
 
-_Bool LIFT_SLEW_CONTROL_ENABLED, BASE_SLEW_CONTROL_ENABLED;
-int g_LiftLeftEncoder, g_LiftRightEncoder, g_BaseLeftEncoder,
-		g_BaseRightEncoder, g_IntakeForkState;
-_Bool g_ShouldResetSensors;
+_Bool LIFT_SLEW_CONTROL_ENABLED, BASE_SLEW_CONTROL_ENABLED, g_ShouldResetSensors;
 
-int temp1, temp2;
+TaskHandle joyControlHandle, solControlHandle, odoTaskHandle;
+
+OdometricLocalizer mainOdo;
+// uint8_t volatile * joyWatchDogFlag = (uint8_t volatile *)0x00;
 
 /*
  * Waits for a value to be Zero before allowing a thread to continue
  */
 void waitForZero(int value) {
-	while (value != 0) {
-		delay(20);
-	}
+    while (value != 0) {
+        delay(20);
+    }
+}
+void solenoidControlTask(void *ignore) {
+
+    while (true) {
+        if (joystickGetDigital(1, 8, JOY_RIGHT) == 1) toggleIntakeForks();
+        delay(500);
+    }
+}
+
+void odoUpdateTask(void *ignore) {
+    while (true) {
+        step_OdometricLocalizer(&mainOdo);
+    }
+
+}
+
+void watchDogManagement(void *ignore) {
+    do {
+
+        if (taskGetState(joyControlHandle) == (TASK_DEAD || TASK_RUNNABLE)) {
+            taskDelete(joyControlHandle);
+            joyControlHandle = taskCreate(joystickControlTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 1));
+        }
+        if (taskGetState(solControlHandle) == (TASK_DEAD || TASK_RUNNABLE)) {
+            taskDelete(solControlHandle);
+            solControlHandle = taskCreate(solenoidControlTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+        }
+        if (taskGetState(odoTaskHandle) == (TASK_DEAD || TASK_RUNNABLE)) {
+            taskDelete(odoTaskHandle);
+            odoTaskHandle = taskCreate(odoUpdateTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 2));
+        }
+        delay(5000);
+    } while (true);
 }
 
 /**
  * Runs the user operator control code.
- *
- * This function will be started in its own task with the default priority and stack size whenever the robot is enabled via the Field Management System or the VEX Competition Switch in the operator control mode. If the robot is disabled or communications is lost, the operator control task will be stopped by the kernel. Re-enabling the robot will restart the task, not resume it from where it left off.
- *
- * If no VEX Competition Switch or Field Management system is plugged in, the VEX Cortex will run the operator control task. Be warned that this will also occur if the VEX Cortex is tethered directly to a computer via the USB A to A cable without any VEX Joystick attached.
- *
- * Code running in this task can take almost any action, as the VEX Joystick is available and the scheduler is operational. However, proper use of delay() or taskDelayUntil() is highly recommended to give other tasks (including system tasks such as updating LCDs) time to run.
- *
- * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
 void operatorControl() {
 
-	if (g_ShouldResetSensors) {
-		imeReset(IME_BASE_LEFT);
-		imeReset(IME_BASE_RIGHT);
-		imeReset(IME_LIFT_LEFT);
-		imeReset(IME_LIFT_RIGHT);
-	}
+    taskCreate(watchDogManagement, 64, NULL, 1);
+// joyControlHandle = taskCreate(joystickControlTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 1));
+// solControlHandle = taskCreate(solenoidControlTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
 
-//	g_ShouldResetSensors = false;
+    LIFT_SLEW_CONTROL_ENABLED = false;
+    BASE_SLEW_CONTROL_ENABLED = false;
 
-//	taskCreate(slewrateControl_task, TASK_DEFAULT_STACK_SIZE, NULL,
-//			(TASK_PRIORITY_HIGHEST - 3));
+    lcdClear(LCD_PORT);
 
-	LIFT_SLEW_CONTROL_ENABLED = false;
-	BASE_SLEW_CONTROL_ENABLED = false;
+    while (true) {
 
-	lcdClear(LCD_PORT);
 
-	taskCreate(joystickControlTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 1));
-//		taskCreate(imeUpdateTask, 1024, NULL,
-//				(TASK_PRIORITY_HIGHEST - 1));
+        lcdPrint(LCD_PORT, 1, "Main: %1.2f%s", (double) powerLevelMain() / 1000.0, "V");
+        lcdPrint(LCD_PORT, 2, "Backup: %1.2f%s", (double) powerLevelBackup() / 1000.0, "V");
 
-	while (true) {
-
-		if (joystickGetDigital(1, 8, JOY_RIGHT) == 1) {
-
-			toggleIntakeForks();
-
-			delay(500);
-		}
-//		imeGet(IME_LIFT_LEFT, &g_LiftLeftEncoder);
-//		imeGet(IME_LIFT_RIGHT, &g_LiftRightEncoder);
-//		imeGet(IME_BASE_LEFT, &g_BaseLeftEncoder);
-//		imeGet(IME_BASE_RIGHT, &g_BaseRightEncoder);
-//
-//		g_LiftRightEncoder *= -1;
-//		g_BaseRightEncoder *= -1;
-//		joystickControlTask();
-
-		lcdPrint(LCD_PORT, 1, "Main: %1.2f%s",
-				(double) powerLevelMain() / 1000.0, "V");
-		lcdPrint(LCD_PORT, 2, "Backup: %1.2f%s",
-				(double) powerLevelBackup() / 1000.0, "V");
-		delay(20);
-	}
+        delay(20);
+    }
 }
-

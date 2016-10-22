@@ -20,67 +20,55 @@
 int g_IntakeForkState;
 Gyro mainGyro;
 // Slew Rate Enabled?
-_Bool LIFT_SLEW_CONTROL_ENABLED;
-_Bool BASE_SLEW_CONTROL_ENABLED;
+_Bool LIFT_SLEW_CONTROL_ENABLED, BASE_SLEW_CONTROL_ENABLED;
+
+Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
+
+OdometricLocalizer mainOdo;
 
 /**
  * Runs pre-initialization code.
- *
- * This function will be started in kernel mode one time while the VEX Cortex is starting up. As the scheduler is still paused, most API functions will fail.
- *
- * The purpose of this function is solely to set the default pin modes (pinMode()) and port states (digitalWrite()) of limit switches, push buttons, and solenoids. It can also safely configure a UART port (usartOpen()) but cannot set up an LCD (lcdInit()).
  */
 void initializeIO() {
 
-	pinMode(SOL_LEFT, OUTPUT);
-	pinMode(SOL_RIGHT, OUTPUT);
+    pinMode(SOL_LEFT, OUTPUT);
+    pinMode(SOL_RIGHT, OUTPUT);
 
-	digitalWrite(SOL_LEFT, 0);
-	digitalWrite(SOL_RIGHT, 0);
+    digitalWrite(SOL_LEFT, 0);
+    digitalWrite(SOL_RIGHT, 0);
 
-	g_IntakeForkState = 0;
+    g_IntakeForkState = 0;
 }
 
 /**
  * Runs user initialization code.
- *
- * This function will be started in its own task with the default priority and stack size once when the robot is starting up. It is possible that the VEXnet communication link may not be fully established at this time, so reading from the VEX Joystick may fail.
- *
- * This function should initialize most sensors (gyro, encoders, ultrasonics), LCDs, global variables, and IMEs.
- *
- * This function must exit relatively promptly, or the operatorControl() and autonomous() tasks will not start. An autonomous mode selection menu like the pre_auton() in other environments can be implemented in this task if desired.
  */
-
 void initialize() {
+    addMotor(MOTOR_BASE_FRONT_LEFT, MOTOR_SLOW_SLEW_RATE);
+    addMotor(MOTOR_BASE_FRONT_RIGHT, MOTOR_SLOW_SLEW_RATE);
+    addMotor(MOTOR_BASE_BACK_LEFT, MOTOR_SLOW_SLEW_RATE);
+    addMotor(MOTOR_BASE_BACK_RIGHT, MOTOR_SLOW_SLEW_RATE);
+    addMotor(MOTOR_LIFT_LEFT_TOP, LIFT_SLOW_SLEW_RATE);
+    addMotor(MOTOR_LIFT_LEFT_BOT, LIFT_SLOW_SLEW_RATE);
+    addMotor(MOTOR_LFIT_RIGHT_TOP, LIFT_SLOW_SLEW_RATE);
+    addMotor(MOTOR_LIFT_RIGHT_TOP, LIFT_SLOW_SLEW_RATE);
 
+// TODO: Add values
+    init_OdometricLocalizer(&mainOdo, Optical, NULL, NULL, 360.0);
 
-//	addMotor(MOTOR_BASE_FRONT_LEFT, MOTOR_SLOW_SLEW_RATE);
-//	addMotor(MOTOR_BASE_FRONT_RIGHT, MOTOR_SLOW_SLEW_RATE);
-//	addMotor(MOTOR_BASE_BACK_LEFT, MOTOR_SLOW_SLEW_RATE);
-//	addMotor(MOTOR_BASE_BACK_RIGHT, MOTOR_SLOW_SLEW_RATE);
-//	addMotor(MOTOR_LIFT_LEFT_TOP, LIFT_SLOW_SLEW_RATE);
-//	addMotor(MOTOR_LIFT_LEFT_BOT, LIFT_SLOW_SLEW_RATE);
-//	addMotor(MOTOR_LFIT_RIGHT_TOP, LIFT_SLOW_SLEW_RATE);
-//	addMotor(MOTOR_LIFT_RIGHT_TOP, LIFT_SLOW_SLEW_RATE);
+    lcdInit(LCD_PORT);
+    lcdClear(LCD_PORT);
+    lcdSetBacklight(LCD_PORT, true);
 
+    lcdPrint(LCD_PORT, 1, " ROBOT STARTING ");
+    lcdPrint(LCD_PORT, 2, "  PLEASE WAIT   ");
 
-	lcdInit(LCD_PORT);
-	lcdClear(LCD_PORT);
-	lcdSetBacklight(LCD_PORT, true);
-	lcdPrint(LCD_PORT, 1, " ROBOT STARTING ");
-	lcdPrint(LCD_PORT, 2, "  PLEASE WAIT   ");
+    enc_baseLeft = encoderInit(QUAD_BASE_LEFT, QUAD_BASE_LEFT_2, true);
+    enc_baseRight = encoderInit(QUAD_BASE_RIGHT, QUAD_BASE_RIGHT_2, false);
+    enc_liftLeft = encoderInit(QUAD_LIFT_LEFT, QUAD_LIFT_LEFT_2, true);
+    enc_liftRight = encoderInit(QUAD_LIFT_RIGHT, QUAD_LIFT_RIGHT_2, false);
 
-	if (imeInitializeAll() != 4) {
-		lcdClear(LCD_PORT);
-		lcdPrint(LCD_PORT, 1, "Not all IME's Found");
-		printf("Not all IMEs were found\r\n");
-	}
+    //mainGyro = gyroInit(GYRO_PORT, 0);
 
-
-
-	//mainGyro = gyroInit(GYRO_PORT, 0);
-
-	//delay(600);
-
-	return;
+    return;
 }

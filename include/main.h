@@ -45,9 +45,10 @@
 
 #include <API.h>
 #include <math.h>
-#include "UserDefinitions.h"
-#include "slewRateController.h"
-#include "motorControlFunctions.h"
+#include "../src/UserDefinitions.h"
+#include "../src/slewRateController.h"
+#include "../src/motorControlFunctions.h"
+#include "../src/OdometricLocalizer.h"
 
 //#include "slewRateController.h"
 //#include "OdometricLocalizer.h"
@@ -68,7 +69,8 @@ extern Gyro mainGyro;
 extern _Bool LIFT_SLEW_CONTROL_ENABLED;
 extern _Bool BASE_SLEW_CONTROL_ENABLED;
 extern _Bool g_shouldResetSensors;
-
+extern Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
+extern OdometricLocalizer mainOdo;
 //#define AUTO_DEBUG
 
 // A function prototype looks exactly like its declaration, but with a semicolon instead of
