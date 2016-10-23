@@ -20,37 +20,28 @@ _Bool LIFT_SLEW_CONTROL_ENABLED, BASE_SLEW_CONTROL_ENABLED, g_shouldResetSensors
 
 Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
 
-/*
- * Runs the user autonomous code.
- */
-void autonomous() {
-    int tt;
-    LIFT_SLEW_CONTROL_ENABLED = false;
-    BASE_SLEW_CONTROL_ENABLED = false;
 
-//	programmingSkills();
-//	Normal Autonomous
+void normalAutonomous(){
+  int tt;
+  turnTime(60, 230);
+  delay(500);
 
-    turnTime(60, 230);
-    delay(500);
+  tt = encoderGet(enc_liftLeft);
+  while (encoderGet(enc_liftLeft) < tt + 800)
+      setLift(50);
+  setLift(0);
 
-    tt = encoderGet(enc_liftLeft);
-    while (encoderGet(enc_liftLeft) < tt + 800)
-        setLift(50);
-    setLift(0);
+  driveTime(127, 127, 1500);
+  delay(1000);
+  driveTime(-127, -127, 200);
+  delay(250);
+  turnTime(60, 250);
+  driveTime(60, 60, 800);
+  driveTime(-127, -127, 300);
+  turnTime(60, 256.0);
+  driveTime(127, 127, 600);
+  driveTime(-127, -127, 400);
 
-    driveTime(127, 127, 1500);
-    delay(1000);
-    driveTime(-127, -127, 200);
-    delay(250);
-    turnTime(60, 250);
-    driveTime(60, 60, 800);
-    driveTime(-127, -127, 300);
-    turnTime(60, 256.0);
-    driveTime(127, 127, 600);
-    driveTime(-127, -127, 400);
-
-    g_shouldResetSensors = false;
 }
 
 void programmingSkills() {
@@ -152,4 +143,19 @@ void programmingSkills() {
     // setLift(0);
 		//
     // driveTime(127, 127, 500);
+}
+
+/*
+ * Runs the user autonomous code.
+ */
+void autonomous() {
+
+    LIFT_SLEW_CONTROL_ENABLED = false;
+    BASE_SLEW_CONTROL_ENABLED = false;
+
+//	programmingSkills();
+	normalAutonomous();
+
+
+    g_shouldResetSensors = false;
 }

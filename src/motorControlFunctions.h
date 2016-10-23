@@ -16,6 +16,5 @@ int turnQuad(const int power, const int ticks);
 // int turnIME(const int power, const int ticks);
 // int driveIME(const int power, const int ticks);
 int cJoyThreshold(int i);
-void joystickControlTask(void *ignore);
 
 #endif //MOTORCONTROLFUNCTIONS_H_INCLUDED

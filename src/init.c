@@ -15,15 +15,12 @@
  * Purdue Robotics OS contains FreeRTOS(http://www.freertos.org) whose source code may be obtained from http://sourceforge.net/projects/freertos/files/ or on request.
  */
 
-#include "main.h"
+#include "../include/main.h"
 
 int g_IntakeForkState;
 Gyro mainGyro;
-// Slew Rate Enabled?
 _Bool LIFT_SLEW_CONTROL_ENABLED, BASE_SLEW_CONTROL_ENABLED;
-
 Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
-
 OdometricLocalizer mainOdo;
 
 /**
@@ -68,7 +65,9 @@ void initialize() {
     enc_liftLeft = encoderInit(QUAD_LIFT_LEFT, QUAD_LIFT_LEFT_2, true);
     enc_liftRight = encoderInit(QUAD_LIFT_RIGHT, QUAD_LIFT_RIGHT_2, false);
 
-    //mainGyro = gyroInit(GYRO_PORT, 0);
+    taskCreate(watchDogManagement, 64, NULL, 1);
+
+    mainGyro = gyroInit(GYRO_PORT, 0);
 
     return;
 }

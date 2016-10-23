@@ -49,16 +49,7 @@
 #include "../src/slewRateController.h"
 #include "../src/motorControlFunctions.h"
 #include "../src/OdometricLocalizer.h"
-
-//#include "slewRateController.h"
-//#include "OdometricLocalizer.h"
-
-
-// Allow usage of this file in C++ programs
-#ifdef __cplusplus
-extern "C" {
-#endif
-
+#include "../src/TaskManagement.h"
 
 extern int g_IntakeForkState;
 extern int g_LiftLeftEncoder;
@@ -70,7 +61,14 @@ extern _Bool LIFT_SLEW_CONTROL_ENABLED;
 extern _Bool BASE_SLEW_CONTROL_ENABLED;
 extern _Bool g_shouldResetSensors;
 extern Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
+extern TaskHandle joyControlHandle, solControlHandle, odoTaskHandle,  slewControlHandle;
 extern OdometricLocalizer mainOdo;
+
+
+// Allow usage of this file in C++ programs
+#ifdef __cplusplus
+extern "C" {
+#endif
 //#define AUTO_DEBUG
 
 // A function prototype looks exactly like its declaration, but with a semicolon instead of

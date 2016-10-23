@@ -21,10 +21,10 @@
 
 //Motor representation
 typedef struct driveMotor_t {
-	int reqSpeed;   //Input speed
-	float artSpeed; //Artificial speed (the exact speed as governed by the slew rate)
-	float slew;     //Slew rate
-	bool active;    //Whether or not to handle this motor
+    int reqSpeed;   //Input speed
+    float artSpeed; //Artificial Speed
+    float slew;     //Slew rate
+    bool active;    //Whether or not to handle this motor
 } driveMotor;
 
 extern driveMotor driveMotors[MOTOR_NUM];
