@@ -94,7 +94,7 @@
 #define QUAD_LIFT_LEFT 7
 #define QUAD_LIFT_LEFT_2 8
 #define QUAD_LIFT_RIGHT 9
-#define QUAD_LIFT_RIGHT_2 10
+#define QUAD_LIFT_RIGHT_2 11
 
 // Joystick Defines
 #define JOY_JOY_LV 3
