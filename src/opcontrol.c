@@ -16,7 +16,6 @@
  ********************************************************************************/
 
 #include "../include/main.h"
-//#include "motorControlFunctions.h"
 
 _Bool LIFT_SLEW_CONTROL_ENABLED, BASE_SLEW_CONTROL_ENABLED, g_ShouldResetSensors;
 OdometricLocalizer mainOdo;
@@ -32,7 +31,6 @@ void waitForZero(int value) {
  * Runs the user operator control code.
  */
 void operatorControl() {
-
     LIFT_SLEW_CONTROL_ENABLED = true;
     BASE_SLEW_CONTROL_ENABLED = true;
 
@@ -40,8 +38,8 @@ void operatorControl() {
 
     while (true) {
 
-        lcdPrint(LCD_PORT, 1, "Main: %1.2f%s", (double) powerLevelMain() / 1000.0, "V");
-        lcdPrint(LCD_PORT, 2, "Backup: %1.2f%s", (double) powerLevelBackup() / 1000.0, "V");
+        lcdPrint(LCD_PORT, 1, "Main: %1.2f%s", (double)powerLevelMain() / 1000.0, "V");
+        lcdPrint(LCD_PORT, 2, "Backup: %1.2f%s", (double)powerLevelBackup() / 1000.0, "V");
 
         delay(20);
     }
