@@ -1,6 +1,6 @@
-#include "main.h"
+#include "../include/main.h"
 
-#include "../src/OdometricLocalizer.h"
+#include "../include/OdometricLocalizer.h"
 
 
 void getOdoPosition(OdometricLocalizer *odo, Pose *pos) {

@@ -21,13 +21,6 @@ _Bool LIFT_SLEW_CONTROL_ENABLED, BASE_SLEW_CONTROL_ENABLED, g_ShouldResetSensors
 OdometricLocalizer mainOdo;
 
 /*
- * Waits for a value to be Zero before allowing a thread to continue
- */
-void waitForZero(int value) {
-    while (value != 0) delay(20);
-}
-
-/*
  * Runs the user operator control code.
  */
 void operatorControl() {

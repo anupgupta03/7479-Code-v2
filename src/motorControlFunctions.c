@@ -5,11 +5,18 @@
  *      Author: user
  */
 
-#include "main.h"
-#include "../src/motorControlFunctions.h"
+#include "../include/main.h"
+#include "../include/motorControlFunctions.h"
 
 _Bool LIFT_SLEW_CONTROL_ENABLED, BASE_SLEW_CONTROL_ENABLED;
 int g_LiftLeftEncoder, g_LiftRightEncoder, g_BaseLeftEncoder, g_BaseRightEncoder, g_IntakeForkState;
+
+/*
+ * Waits for a value to be Zero before allowing a thread to continue
+ */
+void waitForZero(int value) {
+    while (value != 0) delay(20);
+}
 
 /*
  * Calculates Joystick Dead-Zoning and returns value mapped to a cubic function

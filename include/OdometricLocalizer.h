@@ -1,7 +1,8 @@
 #ifndef ODOMETRICLOCALIZER_H_INCLUDED
 #define ODOMETRICLOCALIZER_H_INCLUDED
 #include <API.h>
-#include "../src/UserDefinitions.h"
+#include "../include/main.h"
+
 // Types of encoders that can be used
 typedef enum t_EncoderTypes {
     IME, Optical

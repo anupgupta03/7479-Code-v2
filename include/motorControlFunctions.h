@@ -1,6 +1,8 @@
 #ifndef MOTORCONTROLFUNCTIONS_H_INCLUDED
 #define MOTORCONTROLFUNCTIONS_H_INCLUDED
 
+void waitForZero(int value);
+int cJoyThreshold(int i);
 int setIntakeForks(const int dir);
 int toggleIntakeForks();
 int setLiftLeft(const int power);
@@ -15,6 +17,6 @@ int driveQuad(const int power, const int ticks);
 int turnQuad(const int power, const int ticks);
 // int turnIME(const int power, const int ticks);
 // int driveIME(const int power, const int ticks);
-int cJoyThreshold(int i);
+
 
 #endif //MOTORCONTROLFUNCTIONS_H_INCLUDED

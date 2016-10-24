@@ -1,5 +1,5 @@
 #include "../include/main.h"
-#include "../src/TaskManagement.h"
+#include "../include/TaskManagement.h"
 
 TaskHandle joyControlHandle, solControlHandle, odoTaskHandle, slewControlHandle;
 Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;

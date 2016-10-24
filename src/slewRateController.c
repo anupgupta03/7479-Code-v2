@@ -4,7 +4,7 @@
  *  Created on: Oct 5, 2016
  *      Author: natty
  */
-#include "../src/slewRateController.h"
+#include "../include/slewRateController.h"
 
 driveMotor driveMotors[MOTOR_NUM];
 

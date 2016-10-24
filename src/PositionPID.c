@@ -4,8 +4,8 @@
  *  Created on: Oct 5, 2016
  *      Author: natty
  */
-#include "main.h"
-#include "PositionPID.h"
+#include "../include/main.h"
+#include "../include/PositionPID.h"
 
 void pos_PID_InitController(pos_PID *pid, const Encoder sensor, const float kP, const float kI, const float kD, const float kBias, const int errorThreshold, const int integralLimit)
 {

@@ -45,20 +45,23 @@
 
 #include <API.h>
 #include <math.h>
-#include "../src/UserDefinitions.h"
-#include "../src/slewRateController.h"
-#include "../src/motorControlFunctions.h"
-#include "../src/OdometricLocalizer.h"
-#include "../src/TaskManagement.h"
+#include "../include/UserDefinitions.h"
+#include "../include/slewRateController.h"
+#include "../include/motorControlFunctions.h"
+#include "../include/OdometricLocalizer.h"
+#include "../include/TaskManagement.h"
 
+/*
+* Globals
+*/
 extern int g_IntakeForkState;
 extern int g_LiftLeftEncoder;
 extern int g_LiftRightEncoder;
 extern int g_BaseLeftEncoder;
 extern int g_BaseRightEncoder;
 extern Gyro mainGyro;
-extern _Bool LIFT_SLEW_CONTROL_ENABLED;
 extern _Bool BASE_SLEW_CONTROL_ENABLED;
+extern _Bool LIFT_SLEW_CONTROL_ENABLED;
 extern _Bool g_shouldResetSensors;
 extern Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
 extern TaskHandle joyControlHandle, solControlHandle, odoTaskHandle,  slewControlHandle;
