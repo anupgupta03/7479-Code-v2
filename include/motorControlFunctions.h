@@ -3,23 +3,85 @@
 
 /**
 * Wait for a value to reach zero before allowing the thread to continue
-*
 * @param value Value to watch
 */
 void waitForZero(int value);
+/**
+ * Calculates a Joystick threshold value and maps it to a cubic function
+ * @param  input Input joystick Value
+ * @return       Output Cubic or 0.0 if inside deadzone
+ */
 float cJoyThreshold(int input);
-int setIntakeForks(const int dir);
-int toggleIntakeForks();
-int setLiftLeft(const int power);
-int setLiftRight(const int power);
-int setDriveLeft(const int power);
-int setDriveRight(const int power);
-int setLift(const int power);
-int driveTime(const int l_power, const int r_power, const int timeMs);
-int driveStraightTime(const int power, const unsigned timeMs);
-int turnTime(const int power, const int timeMs);
-int turnGyro(const int power, const int deg);
-int driveQuad(const int power, const int ticks);
-int turnQuad(const int power, const int ticks);
+/**
+ * Sets the state of the intake forks
+ * @param dir Direction that the intake forks will be set to 0 = UP, 1 = DOWN
+ */
+void setIntakeForks(const int dir);
+/**
+ * Toggles the state of the intake forks
+ */
+void toggleIntakeForks();
+/**
+ * Sets the left side of the lift to a power
+ * @param power Power to set the lift side to
+ */
+void setLiftLeft(const int power);
+/**
+ * Sets the right side of the lift to a power
+ * @param power Power to set the lift side to
+ */
+void setLiftRight(const int power);
+/**
+ * Ssets the left side of the drive to a power
+ * @param power Power to set the drive side to
+ */
+void setDriveLeft(const int power);
+/**
+ * Sets the right side of the drive to a power
+ * @param power Power to set the drive side to
+ */
+void setDriveRight(const int power);
+/**
+ * Sets the entire lift to a power and keeps the sides equal with encoders
+ * @param power Power to set the lift to
+ */
+void setLift(const int power);
+/**
+ * Drives for a specific time using raw motor control
+ * @param l_power Power sent to the left side
+ * @param r_power Power sent to the right side
+ * @param timeMs  Time to drive for
+ */
+void driveTime(const int l_power, const int r_power, const int timeMs);
+/**
+ * Drives straight for a certain time using encoders to keep straight
+ * @param power  Power sent to the drive
+ * @param timeMs Time to drive
+ */
+void driveStraightTime(const int power, const unsigned timeMs);
+/**
+ * Turns using no encoders for a specified amount of time
+ * @param power  Power sent to the drive
+ * @param timeMs Time to drive
+ */
+void turnTime(const int power, const int timeMs);
+/**
+ * Turns using the gyro sensor
+ * @param power Max power sent to the drive
+ * @param deg   Number of degrees to turn
+ */
+void turnGyro(const int power, const int deg);
+/**
+ * Drives straight using encoders for a specified number of ticks
+ * @param power Power sent to the drive
+ * @param ticks Number of ticks to drive
+ */
+void driveQuad(const int power, const int ticks);
+/**
+ * Turns using encoders for a specified number of ticks
+ * @param power Power sent to the drive
+ * @param ticks Number of ticks to turn
+ */
+void turnQuad(const int power, const int ticks);
 
 #endif //MOTORCONTROLFUNCTIONS_H_INCLUDED
