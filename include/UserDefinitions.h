@@ -89,10 +89,13 @@
 // Optical Encoder Defines (Digital)
 #define QUAD_BASE_LEFT 3
 #define QUAD_BASE_LEFT_2 4
+
 #define QUAD_BASE_RIGHT 5
 #define QUAD_BASE_RIGHT_2 6
+
 #define QUAD_LIFT_LEFT 7
 #define QUAD_LIFT_LEFT_2 8
+
 #define QUAD_LIFT_RIGHT 9
 #define QUAD_LIFT_RIGHT_2 11
 

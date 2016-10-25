@@ -9,7 +9,7 @@
 #include "../include/motorControlFunctions.h"
 
 _Bool LIFT_SLEW_CONTROL_ENABLED, BASE_SLEW_CONTROL_ENABLED;
-int g_LiftLeftEncoder, g_LiftRightEncoder, g_BaseLeftEncoder, g_BaseRightEncoder, g_IntakeForkState;
+int g_IntakeForkState;
 
 void waitForZero(int value) {
     while (value != 0) delay(20);
@@ -19,21 +19,21 @@ float cJoyThreshold(int input) {
     return (abs(input) > JOYSTICK_THRESHOLD) ? (float)(mapCubic(input)) : 0.0;
 }
 
-int setIntakeForks(const int dir) {
+void setIntakeForks(const int dir) {
     digitalWrite(SOL_LEFT, dir);
     digitalWrite(SOL_RIGHT, dir);
     g_IntakeForkState = dir;
-    return 0;
+
 }
 
-int toggleIntakeForks() {
+void toggleIntakeForks() {
     digitalWrite(SOL_LEFT, digitalRead(SOL_LEFT) == 1 ? 0 : 1);
     digitalWrite(SOL_RIGHT, digitalRead(SOL_RIGHT) == 1 ? 0 : 1);
     g_IntakeForkState = (digitalRead(SOL_RIGHT) == 1 ? 0 : 1);
-    return 0;
+
 }
 
-int setLiftLeft(const int power) {
+void setLiftLeft(const int power) {
     switch (LIFT_SLEW_CONTROL_ENABLED) {
     case true:
         setMotorSpeed(MOTOR_LIFT_LEFT_TOP, (-1 * power));
@@ -44,10 +44,10 @@ int setLiftLeft(const int power) {
         motorSet(MOTOR_LIFT_LEFT_BOT, (-1 * power));
         break;
     }
-    return 0;
+
 }
 
-int setLiftRight(const int power) {
+void setLiftRight(const int power) {
     switch (LIFT_SLEW_CONTROL_ENABLED) {
     case true:
         setMotorSpeed(MOTOR_LFIT_RIGHT_TOP, power);
@@ -58,10 +58,10 @@ int setLiftRight(const int power) {
         motorSet(MOTOR_LIFT_RIGHT_TOP, power);
         break;
     }
-    return 0;
+
 }
 
-int setDriveLeft(const int power) {
+void setDriveLeft(const int power) {
     switch (BASE_SLEW_CONTROL_ENABLED) {
     case true:
         setMotorSpeed(MOTOR_BASE_FRONT_LEFT, power);
@@ -72,10 +72,10 @@ int setDriveLeft(const int power) {
         motorSet(MOTOR_BASE_BACK_LEFT, power);
         break;
     }
-    return 0;
+
 }
 
-int setDriveRight(const int power) {
+void setDriveRight(const int power) {
     switch (BASE_SLEW_CONTROL_ENABLED) {
     case true:
         setMotorSpeed(MOTOR_BASE_FRONT_RIGHT, -1 * power);
@@ -86,16 +86,16 @@ int setDriveRight(const int power) {
         motorSet(MOTOR_BASE_BACK_RIGHT, -1 * power);
         break;
     }
-    return 0;
+
 }
 
-int setLift(const int power) {
+void setLift(const int power) {
     setLiftLeft(-1 * power);
     setLiftRight(-1 * (power + (sign(abs(encoderGet(enc_liftLeft)) - abs(encoderGet(enc_liftRight))) * power * 0.1)));
-    return 0;
+
 }
 
-int driveTime(const int l_power, const int r_power, const int timeMs) {
+void driveTime(const int l_power, const int r_power, const int timeMs) {
     unsigned int startingTime = millis();
     while (startingTime + timeMs > millis()) {
         setDriveLeft(l_power);
@@ -103,10 +103,10 @@ int driveTime(const int l_power, const int r_power, const int timeMs) {
     }
     setDriveLeft(0);
     setDriveRight(0);
-    return 0;
+
 }
 
-int driveStraightTime(const int power, const unsigned timeMs) {
+void driveStraightTime(const int power, const unsigned timeMs) {
     int initialLeft, initialRight;
     initialLeft = encoderGet(enc_baseLeft);
     initialRight = encoderGet(enc_baseRight);
@@ -126,10 +126,10 @@ int driveStraightTime(const int power, const unsigned timeMs) {
     driveTime(-1 * (power / 2), -1 * (power / 2), 100);
     setDriveLeft(0);
     setDriveRight(0);
-    return 0;
+
 }
 
-int turnTime(const int power, const int timeMs) {
+void turnTime(const int power, const int timeMs) {
     unsigned int startingTime = millis();
     while (startingTime + timeMs > millis()) {
         setDriveLeft(-1 * power);
@@ -140,10 +140,10 @@ int turnTime(const int power, const int timeMs) {
     delay(75);
     setDriveRight(0);
     setDriveLeft(0);
-    return 0;
+
 }
 
-int driveQuad(const int power, const int ticks) {
+void driveQuad(const int power, const int ticks) {
     int initialLeft, initialRight;
     initialLeft = encoderGet(enc_baseLeft);
     initialRight = encoderGet(enc_baseRight);
@@ -163,10 +163,10 @@ int driveQuad(const int power, const int ticks) {
     driveTime(-1 * (power / 2), -1 * (power / 2), 100);
     setDriveLeft(0);
     setDriveRight(0);
-    return 0;
+
 }
 
-int turnQuad(const int power, const int ticks) {
+void turnQuad(const int power, const int ticks) {
     int initialLeft, initialRight;
     initialLeft = encoderGet(enc_baseLeft);
     initialRight = encoderGet(enc_baseRight);
@@ -186,11 +186,11 @@ int turnQuad(const int power, const int ticks) {
     turnTime(-1 * (power / 2), 100);
     setDriveLeft(0);
     setDriveRight(0);
-    return 0;
+
 }
 
-int turnGyro(const int power, const int deg) {
+void turnGyro(const int power, const int deg) {
 
 // TODO: FINISH THIS FUNCTION
-    return 0;
+
 }
