@@ -75,13 +75,6 @@
 #define MOTOR_BASE_BACK_RIGHT 8   // Reversed
 #define MOTOR_BASE_BACK_LEFT 9
 
-// IME Defines
-// TODO: REDUNDANT
-#define IME_BASE_LEFT 0
-#define IME_BASE_RIGHT 1
-#define IME_LIFT_RIGHT 2
-#define IME_LIFT_LEFT 3
-
 // Solenoid Ports (Digital)
 #define SOL_LEFT  1
 #define SOL_RIGHT 2

@@ -74,19 +74,19 @@ void joystickControlTask(void *ignore) {
 
 void watchDogManagement(void *ignore) {
         do {
-                if (taskGetState(joyControlHandle) == (TASK_DEAD || TASK_RUNNABLE)) {
+                if (taskGetState(joyControlHandle) == (TASK_DEAD || TASK_RUNNABLE) && (!TASK_RUNNING)) {
                         taskDelete(joyControlHandle);
                         joyControlHandle = taskCreate(joystickControlTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 1));
                 }
-                if (taskGetState(solControlHandle) == (TASK_DEAD || TASK_RUNNABLE)) {
+                if (taskGetState(solControlHandle) == (TASK_DEAD || TASK_RUNNABLE) && (!TASK_RUNNING)) {
                         taskDelete(solControlHandle);
                         solControlHandle = taskCreate(solenoidControlTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
                 }
-                if (taskGetState(odoTaskHandle) == (TASK_DEAD || TASK_RUNNABLE)) {
+                if (taskGetState(odoTaskHandle) == (TASK_DEAD || TASK_RUNNABLE) && (!TASK_RUNNING)) {
                         taskDelete(odoTaskHandle);
                         odoTaskHandle = taskCreate(odoUpdateTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 3));
                 }
-                if (taskGetState(slewControlHandle) == (TASK_DEAD || TASK_RUNNABLE)) {
+                if (taskGetState(slewControlHandle) == (TASK_DEAD || TASK_RUNNABLE) && (!TASK_RUNNING)) {
                         taskDelete(slewControlHandle);
                         slewControlHandle = taskCreate(slewrateControl_task, 1024, NULL, (TASK_PRIORITY_HIGHEST - 1));
                 }
