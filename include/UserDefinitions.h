@@ -1,5 +1,5 @@
 /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * UserDefinitions.h
+ * UserDefinitions.h
  *
  *  Created on: Oct 4, 2016
  *      Author: natty
@@ -38,25 +38,16 @@
 #define HIGH_TICKS_PER_REV 392
 #define TURBO_TICKS_PER_REV 216.333
 
-// FIXME: Recalculate Lift sensor limits
 #define LIFT_UPPER_LIMIT 680
 #define LIFT_HALF_LIMIT 250
 #define LIFT_LOWER_LIMIT -5
 
-// Number of sensor counts per single revolution
-#define BASE_IME_COUNTS_PER_REV 392.0
-// Diameter of wheels
-#define BASE_WHEEL_DIAMETER 4.0
-// Track width measured between centers of wheels
-#define BASE_TRACK_WIDTH 15.0
-
-// FIXME: Update wheel diam. and track width with actual values for idler wheels
 // Number of sensor counts per single revolution of Idle wheels
 #define IDLE_COUNTS_PER_REVOLUTION 360.0
 // Diameter of Idler wheels
-#define IDLE_WHEEL_DIAMETER 1234
+#define IDLE_WHEEL_DIAMETER 4.0
 // Track width of Idler wheels
-#define IDLE_TRACK_WIDTH 1234
+#define IDLE_TRACK_WIDTH 14.5
 
 // Method of driving using the joysticks
 // true = TANK DRIVE
