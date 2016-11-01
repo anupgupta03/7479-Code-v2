@@ -2,9 +2,9 @@
 #define MOTORCONTROLFUNCTIONS_H_INCLUDED
 
 /**
-* Wait for a value to reach zero before allowing the thread to continue
-* @param value Value to watch
-*/
+ * Wait for a value to reach zero before allowing the thread to continue
+ * @param value Value to watch
+ */
 void waitForZero(int value);
 /**
  * Calculates a Joystick threshold value and maps it to a cubic function

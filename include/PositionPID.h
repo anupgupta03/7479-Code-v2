@@ -10,38 +10,38 @@
 
 //PID Controller representation
 typedef struct pos_PID_t {
-	//PID constants
-	float kP;
-	float kI;
-	float kD;
-	float kBias;
+	  //PID constants
+	  float kP;
+	  float kI;
+	  float kD;
+	  float kBias;
 
-	//PID calculations
-	int error;
-	int prevError;
-	int integral;
-	int derivative;
+	  //PID calculations
+	  int error;
+	  int prevError;
+	  int integral;
+	  int derivative;
 
-	//PID limits
-	int errorThreshold;
-	int integralLimit;
+	  //PID limits
+	  int errorThreshold;
+	  int integralLimit;
 
-	//Timestep
-	float dt;
-	int prevTime;
+	  //Timestep
+	  float dt;
+	  int prevTime;
 
-	//Input
-	Encoder sensor;
-	int targetPos;
+	  //Input
+	  Encoder sensor;
+	  int targetPos;
 
-	//Output
-	int outVal;
+	  //Output
+	  int outVal;
 } pos_PID;
 
 //Initializes a position PID controller
 void pos_PID_InitController(pos_PID *pid, const Encoder sensor, const float kP,
-		const float kI, const float kD, const float kBias,
-		const int errorThreshold, const int integralLimit);
+                            const float kI, const float kD, const float kBias,
+                            const int errorThreshold, const int integralLimit);
 
 //Sets the target position
 void pos_PID_SetTargetPosition(pos_PID *pid, const int targetPos);

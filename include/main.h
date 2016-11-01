@@ -66,8 +66,6 @@ extern _Bool g_shouldResetSensors;
 extern Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
 extern TaskHandle joyControlHandle, solControlHandle, odoTaskHandle,  slewControlHandle;
 extern OdometricLocalizer mainOdo;
-extern Pose robotPos;
-
 
 // Allow usage of this file in C++ programs
 #ifdef __cplusplus
