@@ -56,11 +56,14 @@ int getEncoderReading(OdometricLocalizer *odo, Direction side);
  * Initializes an OdometricLocalizer with provided parameters and does init math
  * @param odo                 OdometricLocalizer object to init
  * @param type                Type of encoder being used
+ * @param leftEncoder         Encoder object for the left side of the drivetrain
+ * @param rightEncoder        Encoder object for the right side of the drivetrain
+ * @param gyro                Gyro object for rotational measurement
  * @param wheelDiameter       Diameter of wheels
  * @param trackWidth          Distance between centers of wheels
  * @param countsPerRevolution Number of encoder counts per revolution
  */
-void init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type, float wheelDiameter,   float trackWidth, float countsPerRevolution);
+void init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type, Encoder *leftEncoder, Encoder *rightEncoder, Gyro *gyro, float wheelDiameter,  float trackWidth, float countsPerRevolution);
 
 /**
  * Steps an OdometricLocalizer through calculations

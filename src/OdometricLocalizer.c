@@ -28,9 +28,14 @@ int getEncoderReading(OdometricLocalizer *odo, Direction side) {
 	  return NULL;
 }
 
-void init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type, float wheelDiameter,  float trackWidth, float countsPerRevolution) {
+void init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type, Encoder *leftEncoder, Encoder *rightEncoder, Gyro *gyro, float wheelDiameter,  float trackWidth, float countsPerRevolution) {
 	  // Set encoder type being used
 	  odo->encoderType = type;
+
+	  odo->leftEncoder = leftEncoder;
+	  odo->rightEncoder = rightEncoder;
+	  odo->gyro = gyro;
+
 	  // Calculate distance travelled per count
 	  odo->distancePerCount = (PI * wheelDiameter) / countsPerRevolution;
 	  // Calculate radians travelled per count
@@ -47,7 +52,7 @@ void step_OdometricLocalizer(OdometricLocalizer *odo) {
 	  // Variables to store left and right counts
 	  int leftCounts = getEncoderReading(odo, LEFT);
 	  int rightCounts = getEncoderReading(odo, RIGHT);
-	  int gyroCounts = degToRad(gyroGet(odo->gyro));
+	  int gyroCounts = gyroGet(odo->gyro);
 
 	  // If movement is negligble
 	  if (abs(leftCounts - odo->previousLeftCounts) < 2 || abs(rightCounts - odo->previousRightCounts) < 2) return;
@@ -55,7 +60,7 @@ void step_OdometricLocalizer(OdometricLocalizer *odo) {
 	  // Calcualte change in distance travelled
 	  float dDistance = 0.5 * (float)((leftCounts - odo->previousLeftCounts) + (rightCounts - odo->previousRightCounts)) * odo->distancePerCount;
 	  // Calculate change in heading
-	  float dH = (float)gyroCounts - odo->previousGyroHeading;
+	  float dH = gyroCounts - odo->previousGyroHeading;
 	  // Calculate change in X position
 	  float dX = dDistance * (float)cos(odo->heading + (0.5 * dH));
 	  // Calcualte change in Y position
@@ -67,10 +72,10 @@ void step_OdometricLocalizer(OdometricLocalizer *odo) {
 	  odo->heading += dH;
 
 	  // Limit heading to [-PI, PI)
-	  if (odo->heading > PI) {
-		    odo->heading -= (2 * PI);
-	  } else if (odo->heading <= (-1 * PI)) {
-		    odo->heading += (2 * PI);
+	  if (odo->heading > 180.0) {
+		    odo->heading -= (2 * 180.0);
+	  } else if (odo->heading <= (-1 * 180.0)) {
+		    odo->heading += (2 * 180.0);
 	  }
 	  // Set previous counts to initial counts
 	  odo->previousLeftCounts = leftCounts;

@@ -50,7 +50,7 @@ void initialize() {
 	  lcdClear(LCD_PORT);
 	  lcdPrint(LCD_PORT, 1, "ODO Init");
 	  // TODO: Calculate Values to pass into this Odo
-	  init_OdometricLocalizer(&mainOdo, Optical, IDLE_WHEEL_DIAMETER, IDLE_TRACK_WIDTH, IDLE_COUNTS_PER_REVOLUTION);
+	  init_OdometricLocalizer(&mainOdo, Optical, &enc_baseLeft, &enc_baseRight, &mainGyro, IDLE_WHEEL_DIAMETER, IDLE_TRACK_WIDTH, IDLE_COUNTS_PER_REVOLUTION);
 	  lcdClear(LCD_PORT);
 	  lcdPrint(LCD_PORT, 1, "ENC Init");
 	  enc_baseLeft = encoderInit(QUAD_BASE_LEFT, QUAD_BASE_LEFT_2, true);
