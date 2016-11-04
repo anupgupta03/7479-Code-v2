@@ -1,9 +1,8 @@
 #include "../include/TaskManagement.h"
 #include "../include/main.h"
 
-TaskHandle joyControlHandle, solControlHandle, odoTaskHandle, slewControlHandle;
-Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
-OdometricLocalizer mainOdo;
+
+
 
 
 void solenoidControlTask(void *ignore) {
@@ -16,8 +15,7 @@ void solenoidControlTask(void *ignore) {
 
 void odoUpdateTask(void *ignore) {
 	  while (true) {
-		    step_OdometricLocalizer(&mainOdo);
-
+		    //  step_OdometricLocalizer(&mainOdo);
 		    delay(100);
 	  }
 }
@@ -84,10 +82,10 @@ void watchDogManagement(void *ignore) {
 			      taskDelete(solControlHandle);
 			      solControlHandle = taskCreate(solenoidControlTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
 		    }
-		    if (taskGetState(odoTaskHandle) == (TASK_DEAD || TASK_RUNNABLE) && (!TASK_RUNNING)) {
-			      taskDelete(odoTaskHandle);
-			      odoTaskHandle = taskCreate(odoUpdateTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 3));
-		    }
+		    // if (taskGetState(odoTaskHandle) == (TASK_DEAD || TASK_RUNNABLE) && (!TASK_RUNNING)) {
+		    //     taskDelete(odoTaskHandle);
+		    //     odoTaskHandle = taskCreate(odoUpdateTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 3));
+		    // }
 		    if (taskGetState(slewControlHandle) == (TASK_DEAD || TASK_RUNNABLE) && (!TASK_RUNNING)) {
 			      taskDelete(slewControlHandle);
 			      slewControlHandle = taskCreate(slewrateControl_task, 1024, NULL, (TASK_PRIORITY_HIGHEST - 1));

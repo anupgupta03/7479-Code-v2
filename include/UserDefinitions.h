@@ -45,9 +45,9 @@
 // Number of sensor counts per single revolution of Idle wheels
 #define IDLE_COUNTS_PER_REVOLUTION 360.0
 // Diameter of Idler wheels
-#define IDLE_WHEEL_DIAMETER 4.0
+#define IDLE_WHEEL_DIAMETER 2.75
 // Track width of Idler wheels
-#define IDLE_TRACK_WIDTH 14.5
+#define IDLE_TRACK_WIDTH 4.5
 
 // Method of driving using the joysticks
 // true = TANK DRIVE

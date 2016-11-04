@@ -5,7 +5,6 @@
 #include "../include/main.h"
 
 int g_IntakeForkState;
-Gyro mainGyro;
 _Bool LIFT_SLEW_CONTROL_ENABLED, BASE_SLEW_CONTROL_ENABLED;
 Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
 OdometricLocalizer mainOdo;
@@ -50,10 +49,10 @@ void initialize() {
 	  lcdClear(LCD_PORT);
 	  lcdPrint(LCD_PORT, 1, "ODO Init");
 	  // TODO: Calculate Values to pass into this Odo
-	  init_OdometricLocalizer(&mainOdo, Optical, &enc_baseLeft, &enc_baseRight, &mainGyro, IDLE_WHEEL_DIAMETER, IDLE_TRACK_WIDTH, IDLE_COUNTS_PER_REVOLUTION);
+	  //init_OdometricLocalizer(&mainOdo, Optical, &enc_baseLeft, &enc_baseRight, &mainGyro, IDLE_WHEEL_DIAMETER, IDLE_TRACK_WIDTH, IDLE_COUNTS_PER_REVOLUTION);
 	  lcdClear(LCD_PORT);
 	  lcdPrint(LCD_PORT, 1, "ENC Init");
-	  enc_baseLeft = encoderInit(QUAD_BASE_LEFT, QUAD_BASE_LEFT_2, true);
+	  enc_baseLeft = encoderInit(QUAD_BASE_LEFT, QUAD_BASE_LEFT_2, false);
 	  enc_baseRight = encoderInit(QUAD_BASE_RIGHT, QUAD_BASE_RIGHT_2, false);
 	  enc_liftLeft = encoderInit(QUAD_LIFT_LEFT, QUAD_LIFT_LEFT_2, false);
 	  enc_liftRight = encoderInit(QUAD_LIFT_RIGHT, QUAD_LIFT_RIGHT_2, false);
@@ -63,11 +62,11 @@ void initialize() {
 	  encoderReset(enc_baseRight);
 	  encoderReset(enc_liftLeft);
 	  encoderReset(enc_liftRight);
-	  lcdClear(LCD_PORT);
-	  lcdPrint(LCD_PORT, 1, "GYRO Init");
-	  mainGyro = gyroInit(GYRO_PORT, 0);
-	  gyroReset(mainGyro);
-	  delay(1000);
+	  // lcdClear(LCD_PORT);
+	  // lcdPrint(LCD_PORT, 1, "GYRO Init");
+	  // mainGyro = gyroInit(GYRO_PORT, 0);
+	  // gyroReset(mainGyro);
+	  // delay(1000);
 	  lcdClear(LCD_PORT);
 	  lcdPrint(LCD_PORT, 1, "INIT Complete");
 

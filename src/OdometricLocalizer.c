@@ -41,7 +41,7 @@ void init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type, Encoder
 	  // Calculate radians travelled per count
 	  odo->radiansPerCount = (PI * (wheelDiameter / trackWidth)) / countsPerRevolution;
 	  // Set position to 0,0,90
-	  changePos(odo, 0, 0, degToRad(90));
+	  changePos(odo, 0, 0, 90);
 	  // Set previous counts
 	  odo->previousLeftCounts = getEncoderReading(odo, LEFT);
 	  odo->previousRightCounts = getEncoderReading(odo, RIGHT);
@@ -52,15 +52,22 @@ void step_OdometricLocalizer(OdometricLocalizer *odo) {
 	  // Variables to store left and right counts
 	  int leftCounts = getEncoderReading(odo, LEFT);
 	  int rightCounts = getEncoderReading(odo, RIGHT);
-	  int gyroCounts = gyroGet(odo->gyro);
+	  //int gyroCounts = gyroGet(odo->gyro);
 
 	  // If movement is negligble
 	  if (abs(leftCounts - odo->previousLeftCounts) < 2 || abs(rightCounts - odo->previousRightCounts) < 2) return;
+	  //  if ((gyroCounts - odo->previousGyroHeading) < 2) return;
+
+	  // Calculate change in Left side
+	  int dLeftCounts = leftCounts - odo->previousLeftCounts;
+	  // Calculate change in Right side
+	  int dRightCounts = rightCounts - odo->previousRightCounts;
 
 	  // Calcualte change in distance travelled
 	  float dDistance = 0.5 * (float)((leftCounts - odo->previousLeftCounts) + (rightCounts - odo->previousRightCounts)) * odo->distancePerCount;
 	  // Calculate change in heading
-	  float dH = gyroCounts - odo->previousGyroHeading;
+	  float dH = (float) (dRightCounts - dLeftCounts) * odo->radiansPerCount * (180.0/PI);
+	  // GYRO: float dH = gyroCounts - odo->previousGyroHeading;
 	  // Calculate change in X position
 	  float dX = dDistance * (float)cos(odo->heading + (0.5 * dH));
 	  // Calcualte change in Y position
@@ -80,5 +87,5 @@ void step_OdometricLocalizer(OdometricLocalizer *odo) {
 	  // Set previous counts to initial counts
 	  odo->previousLeftCounts = leftCounts;
 	  odo->previousRightCounts = rightCounts;
-	  odo->previousGyroHeading = gyroCounts;
+	  // odo->previousGyroHeading = gyroCounts;
 }
