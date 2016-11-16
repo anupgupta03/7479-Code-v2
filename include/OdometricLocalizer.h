@@ -19,9 +19,9 @@ typedef struct t_OdometricLocalizer {
 	  int previousRightCounts;
 	  int previousGyroHeading;
 	  // Sensors attached to the axis of revolution
-	  Encoder leftEncoder;
-	  Encoder rightEncoder;
-	  Gyro gyro;
+	  Encoder* leftEncoder;
+	  Encoder* rightEncoder;
+	  Gyro* gyro;
 	  // Distance travelled per count (inches)
 	  float distancePerCount;
 	  // Radians per encoder count

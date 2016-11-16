@@ -16,20 +16,18 @@
  ********************************************************************************/
 #include "main.h"
 
-_Bool LIFT_SLEW_CONTROL_ENABLED, BASE_SLEW_CONTROL_ENABLED, g_shouldResetSensors;
 
-Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
 
 void normalAutonomous(){
 
-	  int tt;
+	  // int tt;
 	  turnTime(60, 230);
 	  delay(500);
 
-	  tt = encoderGet(enc_liftLeft);
-	  while (encoderGet(enc_liftLeft) < tt + 800)
-		    setLift(50);
-	  setLift(0);
+	  // tt = encoderGet(enc_liftLeft);
+	  // while (encoderGet(enc_liftLeft) < tt + 800)
+	  //     setLift(50);
+	  // setLift(0);
 
 	  driveTime(127, 127, 1500);
 	  delay(1000);
@@ -46,103 +44,7 @@ void normalAutonomous(){
 
 void programmingSkills() {
 
-	  // int tempEncoder, t22;
-	  // // Programming Skills
-	  // // -------------------------------------
-	  // driveTime(-60, -60, 300);
-	  //
-	  // tempEncoder = g_LiftLeftEncoder;
-	  // t22 = tempEncoder + 800;
-	  //
-	  // while (g_LiftLeftEncoder < tempEncoder + 800)
-	  //     setLift(127);
-	  // setLift(0);
-	  // toggleIntakeForks();
-	  // delay(500);
-	  // driveTime(60, 60, 300);
-	  // // Wait for preload
-	  // delay(2000);
-	  // // Drive back to fence
-	  // driveTime(-127, -127, 1250);
-	  // // Dump Cube
-	  // while (g_LiftLeftEncoder < LIFT_UPPER_LIMIT)
-	  //     setLift(127);
-	  // setLift(0);
-	  // // Lift down again
-	  // tempEncoder = g_LiftLeftEncoder;
-	  // while (g_LiftLeftEncoder > (LIFT_UPPER_LIMIT - t22) + 400)
-	  //     setLift(-50);
-	  // setLift(0);
-	  //
-	  // // Drive back to home
-	  // driveTime(127, 127, 800);
-	  // // Wait for preload
-	  // delay(2000);
-	  //
-	  // // Drive back to fence
-	  // driveTime(-127, -127, 1250);
-	  // // Dump Cube
-	  // while (g_LiftLeftEncoder < LIFT_UPPER_LIMIT)
-	  //     setLift(127);
-	  // setLift(0);
-	  // // Lift down again
-	  // tempEncoder = g_LiftLeftEncoder;
-	  // while (g_LiftLeftEncoder > (LIFT_UPPER_LIMIT - t22) + 400)
-	  //     setLift(-50);
-	  // setLift(0);
-	  //
-	  // // Drive back to home
-	  // driveTime(127, 127, 800);
-	  // // Wait for preload
-	  // delay(2000);
-	  //
-	  // // Drive back to fence
-	  // driveTime(-127, -127, 1250);
-	  // // Dump Cube
-	  // while (g_LiftLeftEncoder < LIFT_UPPER_LIMIT)
-	  //     setLift(127);
-	  // setLift(0);
-	  // // Lift down again
-	  // tempEncoder = g_LiftLeftEncoder;
-	  // while (g_LiftLeftEncoder > (LIFT_UPPER_LIMIT - t22) + 400)
-	  //     setLift(-50);
-	  // setLift(0);
-	  //
-	  // // Drive back to home
-	  // driveTime(127, 127, 800);
-	  // // Wait for preload
-	  // delay(2000);
-	  //
-	  // // Drive back to fence
-	  // driveTime(-127, -127, 1250);
-	  // // Dump Cube
-	  // while (g_LiftLeftEncoder < LIFT_UPPER_LIMIT)
-	  //     setLift(127);
-	  // setLift(0);
-	  // // Lift down again
-	  // tempEncoder = g_LiftLeftEncoder;
-	  // while (g_LiftLeftEncoder > (LIFT_UPPER_LIMIT - t22) + 400)
-	  //     setLift(-50);
-	  // setLift(0);
-	  //
-	  // // Drive back to home
-	  // driveTime(127, 127, 800);
-	  // // Wait for preload
-	  // delay(2000);
-	  //
-	  // // Drive back to fence
-	  // driveTime(-127, -127, 1250);
-	  // // Dump Cube
-	  // while (g_LiftLeftEncoder < LIFT_UPPER_LIMIT)
-	  //     setLift(127);
-	  // setLift(0);
-	  // // Lift down again
-	  // tempEncoder = g_LiftLeftEncoder;
-	  // while (g_LiftLeftEncoder > (LIFT_UPPER_LIMIT - t22) + 400)
-	  //     setLift(-50);
-	  // setLift(0);
-	  //
-	  // driveTime(127, 127, 500);
+
 }
 
 /*

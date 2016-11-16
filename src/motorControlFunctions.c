@@ -8,8 +8,6 @@
 #include "../include/main.h"
 #include "../include/motorControlFunctions.h"
 
-_Bool LIFT_SLEW_CONTROL_ENABLED, BASE_SLEW_CONTROL_ENABLED;
-int g_IntakeForkState;
 
 void waitForZero(int value) {
 	  while (value != 0) delay(20);
@@ -50,12 +48,12 @@ void setLiftLeft(const int power) {
 void setLiftRight(const int power) {
 	  switch (LIFT_SLEW_CONTROL_ENABLED) {
 	  case true:
-		    setMotorSpeed(MOTOR_LFIT_RIGHT_TOP, power);
 		    setMotorSpeed(MOTOR_LIFT_RIGHT_TOP, power);
+		    setMotorSpeed(MOTOR_LIFT_RIGHT_BOT, power);
 		    break;
 	  case false:
-		    motorSet(MOTOR_LFIT_RIGHT_TOP, power);
 		    motorSet(MOTOR_LIFT_RIGHT_TOP, power);
+		    motorSet(MOTOR_LIFT_RIGHT_BOT, power);
 		    break;
 	  }
 

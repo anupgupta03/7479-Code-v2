@@ -14,8 +14,12 @@ void solenoidControlTask(void *ignore) {
 }
 
 void odoUpdateTask(void *ignore) {
+	  // int foo = 0;
 	  while (true) {
-		    //  step_OdometricLocalizer(&mainOdo);
+		    // foo++;
+		    step_OdometricLocalizer(&mainOdo);
+
+		    // lcdPrint(LCD_PORT, 2, "%d", foo);
 		    delay(100);
 	  }
 }

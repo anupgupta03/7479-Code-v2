@@ -9,24 +9,24 @@ void changePos(OdometricLocalizer *odo, float newX, float newY, float newH) {
 	  odo->heading = newH;
 }
 
-int getEncoderReading(OdometricLocalizer *odo, Direction side) {
-	  switch (odo->encoderType) {
-	  case IME:
-		    return NULL;
-		    break;
-	  case Optical:
-		    switch (side) {
-		    case (LEFT):
-			      return encoderGet(odo->leftEncoder);
-			      break;
-		    case (RIGHT):
-			      return encoderGet(odo->rightEncoder);
-			      break;
-		    }
-		    break;
-	  }
-	  return NULL;
-}
+// int getEncoderReading(OdometricLocalizer *odo, Direction side) {
+//        switch (odo->encoderType) {
+//        case IME:
+//                  return NULL;
+//                  break;
+//        case Optical:
+//                  switch (side) {
+//                  case (LEFT):
+//                            return encoderGet(odo->leftEncoder);
+//                            break;
+//                  case (RIGHT):
+//                            return encoderGet(odo->rightEncoder);
+//                            break;
+//                  }
+//                  break;
+//        }
+//        return NULL;
+// }
 
 void init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type, Encoder *leftEncoder, Encoder *rightEncoder, Gyro *gyro, float wheelDiameter,  float trackWidth, float countsPerRevolution) {
 	  // Set encoder type being used
@@ -43,19 +43,19 @@ void init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type, Encoder
 	  // Set position to 0,0,90
 	  changePos(odo, 0, 0, 90);
 	  // Set previous counts
-	  odo->previousLeftCounts = getEncoderReading(odo, LEFT);
-	  odo->previousRightCounts = getEncoderReading(odo, RIGHT);
+	  odo->previousLeftCounts = encoderGet(*(odo->leftEncoder));
+	  odo->previousRightCounts = encoderGet(*(odo->rightEncoder));
 	  odo->previousGyroHeading = gyroGet(odo->gyro);
 }
 
 void step_OdometricLocalizer(OdometricLocalizer *odo) {
 	  // Variables to store left and right counts
-	  int leftCounts = getEncoderReading(odo, LEFT);
-	  int rightCounts = getEncoderReading(odo, RIGHT);
+	  int leftCounts = encoderGet(*(odo->leftEncoder));
+	  int rightCounts = encoderGet(*(odo->rightEncoder));
 	  //int gyroCounts = gyroGet(odo->gyro);
-
+	  // lcdPrint(LCD_PORT, 1, "%d, %d", leftCounts, rightCounts);
 	  // If movement is negligble
-	  if (abs(leftCounts - odo->previousLeftCounts) < 2 || abs(rightCounts - odo->previousRightCounts) < 2) return;
+	  // if (abs(leftCounts - odo->previousLeftCounts) < 2 || abs(rightCounts - odo->previousRightCounts) < 2) return;
 	  //  if ((gyroCounts - odo->previousGyroHeading) < 2) return;
 
 	  // Calculate change in Left side

@@ -62,7 +62,7 @@
 #define MOTOR_LIFT_LEFT_TOP 4
 #define MOTOR_LIFT_LEFT_BOT 5
 #define MOTOR_LIFT_RIGHT_TOP 6  // Reversed
-#define MOTOR_LFIT_RIGHT_TOP 7  // Reversed
+#define MOTOR_LIFT_RIGHT_BOT 7  // Reversed
 #define MOTOR_BASE_BACK_RIGHT 8 // Reversed
 #define MOTOR_BASE_BACK_LEFT 9
 
