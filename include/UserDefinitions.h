@@ -12,23 +12,23 @@
 #include <math.h>
 
 // Fast non-branching sign function
-#define sign(x) (x > 0) - (x < 0)
+#define sign(x) (((x) > 0) - ((x) < 0))
 
 #define PI 3.1415926535
 
 #define half(v) ((v) / 2.0)
 #define square(v) ((v) * (v))
 #define cube(v) ((v) * (v) * (v))
-#define cubeRoot(v) (pow(v, (1 / 3)))
+#define cubeRoot(v) (pow((v), (1 / 3)))
 #define inchesToTicks(i, d) (((i) / (PI * (d))) * 360)
 #define ticksToInches(t, d) (((d)*PI) * ((t) / 360))
-#define inchToCm(i) (i * 2.54)
-#define cmToInch(i) (i / 2.54)
+#define inchToCm(i) ((i) * 2.54)
+#define cmToInch(i) ((i) / 2.54)
 
-#define radToDeg(i) (i * (180 / PI))
-#define degToRad(i) (i * (PI / 180))
+#define radToDeg(i) ((i) * (180 / PI))
+#define degToRad(i) ((i) * (PI / 180))
 
-#define mapCubic(i) ((2 * cube(i)) / 48387) + (i / 3)
+#define mapCubic(i) (((2 * cube(i)) / 48387) + ((i) / 3))
 
 #define DRIVE_ENABLED true
 #define LIFT_ENABLED true
@@ -100,5 +100,11 @@
 #define GYRO_PORT 1
 
 typedef enum t_Direction { LEFT, RIGHT } Direction;
+
+typedef struct pos_t{
+  float x;
+  float y;
+  float h;
+} pos;
 
 #endif /* SRC_USERDEFINITIONS_H_ */

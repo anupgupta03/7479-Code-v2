@@ -50,6 +50,7 @@
 #include "../include/motorControlFunctions.h"
 #include "../include/OdometricLocalizer.h"
 #include "../include/TaskManagement.h"
+#include "../include/pidController.h"
 
 /*
  * Globals
@@ -62,7 +63,7 @@ extern _Bool g_shouldResetSensors;
 extern Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
 extern TaskHandle joyControlHandle, solControlHandle, odoTaskHandle,  slewControlHandle;
 extern OdometricLocalizer mainOdo;
-
+extern pidController headingPID, distancePID;
 
 // Allow usage of this file in C++ programs
 #ifdef __cplusplus

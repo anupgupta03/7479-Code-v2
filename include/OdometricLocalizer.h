@@ -19,9 +19,9 @@ typedef struct t_OdometricLocalizer {
 	  int previousRightCounts;
 	  int previousGyroHeading;
 	  // Sensors attached to the axis of revolution
-	  Encoder* leftEncoder;
-	  Encoder* rightEncoder;
-	  Gyro* gyro;
+	  Encoder leftEncoder;
+	  Encoder rightEncoder;
+	  Gyro gyro;
 	  // Distance travelled per count (inches)
 	  float distancePerCount;
 	  // Radians per encoder count
@@ -63,7 +63,7 @@ int getEncoderReading(OdometricLocalizer *odo, Direction side);
  * @param trackWidth          Distance between centers of wheels
  * @param countsPerRevolution Number of encoder counts per revolution
  */
-void init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type, Encoder *leftEncoder, Encoder *rightEncoder, Gyro *gyro, float wheelDiameter,  float trackWidth, float countsPerRevolution);
+void init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type, Encoder leftEncoder, Encoder rightEncoder, Gyro gyro, float wheelDiameter,  float trackWidth, float countsPerRevolution);
 
 /**
  * Steps an OdometricLocalizer through calculations

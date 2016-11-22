@@ -8,9 +8,16 @@
 #include "../include/main.h"
 #include "../include/motorControlFunctions.h"
 
+float eDist(pos posFrom, pos posTo){
+	  return sqrt(square(posTo.x - posFrom.x) + square(posTo.y - posFrom.y));
+}
 
-void waitForZero(int value) {
-	  while (value != 0) delay(20);
+float dHeading(pos posFrom, pos posTo){
+	  return radToDeg(atan2((posTo.y - posFrom.y), (posTo.x - posFrom.x)));
+}
+
+void waitForZero(int *value) {
+	  while (*value != 0) delay(20);
 }
 
 float cJoyThreshold(int input) {
@@ -192,5 +199,29 @@ void turnQuad(const int power, const int ticks) {
 void turnGyro(const int power, const int deg) {
 
 // TODO: FINISH THIS FUNCTION
+
+}
+
+void moveToPosition(OdometricLocalizer *odo, const int x2, const int y2){
+
+	  float currentX = odo->xPos;
+	  float currentY = odo->yPos;
+	  float posError = eDist(currentX, currentY, x2, y2);
+	  float requiredHeading = atan2(odo->yPos, odo->yPos) * 180 / PI;
+
+	  float headingError = odo->heading - requiredHeading;
+
+	  while (headingError > requiredHeading) {
+		    setDriveLeft(sign(headingError) * 60);
+		    setDriveRight(-1 * sign(headingError) * 60);
+
+		    currentX = odo->xPos;
+		    currentY = odo->yPos;
+		    headingError = odo->heading - requiredHeading;
+	  }
+	  setDriveLeft(0);
+	  setDriveRight(0);
+
+
 
 }

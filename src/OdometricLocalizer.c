@@ -28,7 +28,7 @@ void changePos(OdometricLocalizer *odo, float newX, float newY, float newH) {
 //        return NULL;
 // }
 
-void init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type, Encoder *leftEncoder, Encoder *rightEncoder, Gyro *gyro, float wheelDiameter,  float trackWidth, float countsPerRevolution) {
+void init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type, Encoder leftEncoder, Encoder rightEncoder, Gyro gyro, float wheelDiameter,  float trackWidth, float countsPerRevolution) {
 	  // Set encoder type being used
 	  odo->encoderType = type;
 
@@ -43,15 +43,15 @@ void init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type, Encoder
 	  // Set position to 0,0,90
 	  changePos(odo, 0, 0, 90);
 	  // Set previous counts
-	  odo->previousLeftCounts = encoderGet(*(odo->leftEncoder));
-	  odo->previousRightCounts = encoderGet(*(odo->rightEncoder));
+	  odo->previousLeftCounts = encoderGet(odo->leftEncoder);
+	  odo->previousRightCounts = encoderGet(odo->rightEncoder);
 	  odo->previousGyroHeading = gyroGet(odo->gyro);
 }
 
 void step_OdometricLocalizer(OdometricLocalizer *odo) {
 	  // Variables to store left and right counts
-	  int leftCounts = encoderGet(*(odo->leftEncoder));
-	  int rightCounts = encoderGet(*(odo->rightEncoder));
+	  int leftCounts = encoderGet(odo->leftEncoder);
+	  int rightCounts = encoderGet(odo->rightEncoder);
 	  //int gyroCounts = gyroGet(odo->gyro);
 	  // lcdPrint(LCD_PORT, 1, "%d, %d", leftCounts, rightCounts);
 	  // If movement is negligble
@@ -64,7 +64,7 @@ void step_OdometricLocalizer(OdometricLocalizer *odo) {
 	  int dRightCounts = rightCounts - odo->previousRightCounts;
 
 	  // Calcualte change in distance travelled
-	  float dDistance = 0.5 * (float)((leftCounts - odo->previousLeftCounts) + (rightCounts - odo->previousRightCounts)) * odo->distancePerCount;
+	  float dDistance = 0.5 * (float)(dLeftCounts + dRightCounts) * odo->distancePerCount;
 	  // Calculate change in heading
 	  float dH = (float) (dRightCounts - dLeftCounts) * odo->radiansPerCount * (180.0/PI);
 	  // GYRO: float dH = gyroCounts - odo->previousGyroHeading;

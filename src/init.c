@@ -11,7 +11,7 @@ Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
 TaskHandle joyControlHandle, solControlHandle, odoTaskHandle,  slewControlHandle;
 OdometricLocalizer mainOdo;
 Gyro mainGyro;
-
+pidController headingPID, distancePID;
 
 /**
  * Runs pre-initialization code.
@@ -59,7 +59,7 @@ void initialize() {
 	  enc_liftLeft = encoderInit(QUAD_LIFT_LEFT, QUAD_LIFT_LEFT_2, false);
 	  enc_liftRight = encoderInit(QUAD_LIFT_RIGHT, QUAD_LIFT_RIGHT_2, false);
 	  lcdPrint(LCD_PORT, 1, "ODO Init");
-	  init_OdometricLocalizer(&mainOdo, Optical, &enc_baseLeft, &enc_baseRight, &mainGyro, IDLE_WHEEL_DIAMETER, IDLE_TRACK_WIDTH, IDLE_COUNTS_PER_REVOLUTION);
+	  init_OdometricLocalizer(&mainOdo, Optical, enc_baseLeft, enc_baseRight, mainGyro, IDLE_WHEEL_DIAMETER, IDLE_TRACK_WIDTH, IDLE_COUNTS_PER_REVOLUTION);
 	  lcdClear(LCD_PORT);
 	  lcdPrint(LCD_PORT, 1, "ODO Reset");
 	  encoderReset(enc_baseLeft);

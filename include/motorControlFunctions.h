@@ -1,11 +1,28 @@
 #ifndef MOTORCONTROLFUNCTIONS_H_INCLUDED
 #define MOTORCONTROLFUNCTIONS_H_INCLUDED
+#include "../include/UserDefinitions.h"
 
+/**
+ * Returns the Euclidian Distance between two points
+ * @param  x1 First X-Coordinate
+ * @param  y1 First Y-Coordinate
+ * @param  x2 Second X-Coordinate
+ * @param  y2 Second Y-Coordinate
+ * @return    Euclidian Distance
+ */
+float eDist(int x1, int y1, int x2, int y2);
+/**
+ * Returns Degrees from position to another
+ * @param  posFrom Starting Pos
+ * @param  posTo   Finishing Pos
+ * @return         Degrees to pos
+ */
+float dHeading(pos posFrom, pos posTo);
 /**
  * Wait for a value to reach zero before allowing the thread to continue
  * @param value Value to watch
  */
-void waitForZero(int value);
+void waitForZero(int *value);
 /**
  * Calculates a Joystick threshold value and maps it to a cubic function
  * @param  input Input joystick Value
