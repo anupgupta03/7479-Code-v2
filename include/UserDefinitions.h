@@ -69,6 +69,7 @@
 // Solenoid Ports (Digital)
 #define SOL_LEFT 1
 #define SOL_RIGHT 2
+#define SOL_FLIP 3
 
 // Optical Encoder Defines (Digital)
 #define QUAD_BASE_LEFT 3
@@ -101,10 +102,10 @@
 
 typedef enum t_Direction { LEFT, RIGHT } Direction;
 
-typedef struct pos_t{
-  float x;
-  float y;
-  float h;
+typedef struct pos_t {
+	  float x;
+	  float y;
+	  float h;
 } pos;
 
 #endif /* SRC_USERDEFINITIONS_H_ */

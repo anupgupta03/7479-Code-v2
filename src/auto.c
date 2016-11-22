@@ -16,19 +16,9 @@
  ********************************************************************************/
 #include "main.h"
 
-
-
 void normalAutonomous(){
-
-	  // int tt;
 	  turnTime(60, 230);
 	  delay(500);
-
-	  // tt = encoderGet(enc_liftLeft);
-	  // while (encoderGet(enc_liftLeft) < tt + 800)
-	  //     setLift(50);
-	  // setLift(0);
-
 	  driveTime(127, 127, 1500);
 	  delay(1000);
 	  driveTime(-127, -127, 200);
@@ -39,25 +29,16 @@ void normalAutonomous(){
 	  turnTime(60, 256.0);
 	  driveTime(127, 127, 600);
 	  driveTime(-127, -127, 400);
-
 }
 
 void programmingSkills() {
-
-
 }
 
 /*
  * Runs the user autonomous code.
  */
 void autonomous() {
-
 	  LIFT_SLEW_CONTROL_ENABLED = false;
 	  BASE_SLEW_CONTROL_ENABLED = false;
-
-//	programmingSkills();
 	  normalAutonomous();
-
-
-	  g_shouldResetSensors = false;
 }

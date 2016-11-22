@@ -1,16 +1,15 @@
 #ifndef MOTORCONTROLFUNCTIONS_H_INCLUDED
 #define MOTORCONTROLFUNCTIONS_H_INCLUDED
+#include "../include/OdometricLocalizer.h"
 #include "../include/UserDefinitions.h"
 
 /**
  * Returns the Euclidian Distance between two points
- * @param  x1 First X-Coordinate
- * @param  y1 First Y-Coordinate
- * @param  x2 Second X-Coordinate
- * @param  y2 Second Y-Coordinate
- * @return    Euclidian Distance
+ * @param  posFrom First X-Coordinate
+ * @param  posTo Second Y-Coordinate
+ * @return    Euclidian Distance between points
  */
-float eDist(int x1, int y1, int x2, int y2);
+float eDist(pos posFrom, pos posTo);
 /**
  * Returns Degrees from position to another
  * @param  posFrom Starting Pos
@@ -18,6 +17,12 @@ float eDist(int x1, int y1, int x2, int y2);
  * @return         Degrees to pos
  */
 float dHeading(pos posFrom, pos posTo);
+/**
+ * Finds smallest angle to target
+ * @param  angle Input angle
+ * @return       Output angle
+ */
+int fixAngle(int angle);
 /**
  * Wait for a value to reach zero before allowing the thread to continue
  * @param value Value to watch
@@ -30,14 +35,10 @@ void waitForZero(int *value);
  */
 float cJoyThreshold(int input);
 /**
- * Sets the state of the intake forks
- * @param dir Direction that the intake forks will be set to 0 = UP, 1 = DOWN
+ * Toggles the state of a digital port
+ * @param port Port number to toggle
  */
-void setIntakeForks(const int dir);
-/**
- * Toggles the state of the intake forks
- */
-void toggleIntakeForks();
+void toggleDigitalPort(unsigned port);
 /**
  * Sets the left side of the lift to a power
  * @param power Power to set the lift side to
@@ -100,5 +101,12 @@ void driveQuad(const int power, const int ticks);
  * @param ticks Number of ticks to turn
  */
 void turnQuad(const int power, const int ticks);
+/**
+ * Moves the robot to a position based on a PID and OdometricLocalizer
+ * @param odo  OdometricLocalizer object to read current position from
+ * @param xPos Target X Position
+ * @param yPos Target Y Position
+ */
+void moveToPosition(OdometricLocalizer *odo, float xPos, float yPos);
 
 #endif //MOTORCONTROLFUNCTIONS_H_INCLUDED

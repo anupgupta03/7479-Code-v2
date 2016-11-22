@@ -26,13 +26,8 @@ typedef struct t_OdometricLocalizer {
 	  float distancePerCount;
 	  // Radians per encoder count
 	  float radiansPerCount;
-	  // Current X Coordinate
-	  float xPos;
-	  // Current Y Coordinate
-	  float yPos;
-	  // Current Heading
-	  float heading;
-
+	  //Current Position
+	  pos currentPosition;
 } OdometricLocalizer;
 
 /**

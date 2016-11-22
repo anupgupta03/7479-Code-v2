@@ -55,15 +55,12 @@
 /*
  * Globals
  */
-extern int g_IntakeForkState;
 extern Gyro mainGyro;
 extern _Bool BASE_SLEW_CONTROL_ENABLED;
 extern _Bool LIFT_SLEW_CONTROL_ENABLED;
-extern _Bool g_shouldResetSensors;
 extern Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
-extern TaskHandle joyControlHandle, solControlHandle, odoTaskHandle,  slewControlHandle;
+extern TaskHandle joyControlHandle, solControlHandle, odoTaskHandle,  slewControlHandle, watchdogHandle;
 extern OdometricLocalizer mainOdo;
-extern pidController headingPID, distancePID;
 
 // Allow usage of this file in C++ programs
 #ifdef __cplusplus

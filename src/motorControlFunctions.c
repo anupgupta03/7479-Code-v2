@@ -16,6 +16,10 @@ float dHeading(pos posFrom, pos posTo){
 	  return radToDeg(atan2((posTo.y - posFrom.y), (posTo.x - posFrom.x)));
 }
 
+int fixAngle(int angle){
+	  return (angle + 180)%360 - 180;
+}
+
 void waitForZero(int *value) {
 	  while (*value != 0) delay(20);
 }
@@ -24,18 +28,8 @@ float cJoyThreshold(int input) {
 	  return (abs(input) > JOYSTICK_THRESHOLD) ? (float)(mapCubic(input)) : 0.0;
 }
 
-void setIntakeForks(const int dir) {
-	  digitalWrite(SOL_LEFT, dir);
-	  digitalWrite(SOL_RIGHT, dir);
-	  g_IntakeForkState = dir;
-
-}
-
-void toggleIntakeForks() {
-	  digitalWrite(SOL_LEFT, digitalRead(SOL_LEFT) == 1 ? 0 : 1);
-	  digitalWrite(SOL_RIGHT, digitalRead(SOL_RIGHT) == 1 ? 0 : 1);
-	  g_IntakeForkState = (digitalRead(SOL_RIGHT) == 1 ? 0 : 1);
-
+void toggleDigitalPort(unsigned port) {
+	  digitalWrite(port, digitalRead(port) == 1 ? 0 : 1);
 }
 
 void setLiftLeft(const int power) {
@@ -49,7 +43,6 @@ void setLiftLeft(const int power) {
 		    motorSet(MOTOR_LIFT_LEFT_BOT, (-1 * power));
 		    break;
 	  }
-
 }
 
 void setLiftRight(const int power) {
@@ -63,7 +56,6 @@ void setLiftRight(const int power) {
 		    motorSet(MOTOR_LIFT_RIGHT_BOT, power);
 		    break;
 	  }
-
 }
 
 void setDriveLeft(const int power) {
@@ -77,7 +69,6 @@ void setDriveLeft(const int power) {
 		    motorSet(MOTOR_BASE_BACK_LEFT, power);
 		    break;
 	  }
-
 }
 
 void setDriveRight(const int power) {
@@ -101,7 +92,7 @@ void setLift(const int power) {
 }
 
 void driveTime(const int l_power, const int r_power, const int timeMs) {
-	  unsigned int startingTime = millis();
+	  unsigned startingTime = millis();
 	  while (startingTime + timeMs > millis()) {
 		    setDriveLeft(l_power);
 		    setDriveRight(r_power);
@@ -111,10 +102,10 @@ void driveTime(const int l_power, const int r_power, const int timeMs) {
 }
 
 void driveStraightTime(const int power, const unsigned timeMs) {
-	  int initialLeft, initialRight, startingTime;
-	  initialLeft = encoderGet(enc_baseLeft);
-	  initialRight = encoderGet(enc_baseRight);
-	  startingTime = millis();
+
+	  int initialLeft = encoderGet(enc_baseLeft);
+	  int initialRight = encoderGet(enc_baseRight);
+	  unsigned startingTime = millis();
 
 	  // Drive at full power for 80% of ticks
 	  while (startingTime + (timeMs * 0.8) > millis()) {
@@ -124,7 +115,7 @@ void driveStraightTime(const int power, const unsigned timeMs) {
 	  }
 	  startingTime = millis();
 	  // Drive at 1/3 Power for remaining 20% of ticks
-	  while (startingTime + (timeMs * 0.2) > millis()) {
+	  while (startingTime > millis()) {
 		    setDriveLeft((power / 3));
 		    setDriveRight((power + (sign(((encoderGet(enc_baseLeft) - initialLeft) - (encoderGet(enc_baseRight) - initialRight))) * power * 0.1)) / 3);
 		    delay(20);
@@ -133,7 +124,6 @@ void driveStraightTime(const int power, const unsigned timeMs) {
 	  driveTime(-1 * (power / 2), -1 * (power / 2), 100);
 	  setDriveLeft(0);
 	  setDriveRight(0);
-
 }
 
 void turnTime(const int power, const int timeMs) {
@@ -151,9 +141,9 @@ void turnTime(const int power, const int timeMs) {
 }
 
 void driveQuad(const int power, const int ticks) {
-	  int initialLeft, initialRight;
-	  initialLeft = encoderGet(enc_baseLeft);
-	  initialRight = encoderGet(enc_baseRight);
+
+	  int initialLeft = encoderGet(enc_baseLeft);
+	  int initialRight = encoderGet(enc_baseRight);
 	  // Drive at full power for 80% of ticks
 	  while (encoderGet(enc_baseLeft) < initialLeft + (ticks * 0.8)) {
 		    setDriveLeft(power);
@@ -161,7 +151,7 @@ void driveQuad(const int power, const int ticks) {
 		    delay(20);
 	  }
 	  // Drive at 1/3 Power for remaining 20% of ticks
-	  while (encoderGet(enc_baseLeft) < initialLeft + (ticks * 0.2)) {
+	  while (encoderGet(enc_baseLeft) < initialLeft) {
 		    setDriveLeft((power / 3));
 		    setDriveRight((power + (sign(((encoderGet(enc_baseLeft) - initialLeft) - (encoderGet(enc_baseRight) - initialRight))) * power * 0.1)) / 3);
 		    delay(20);
@@ -174,9 +164,9 @@ void driveQuad(const int power, const int ticks) {
 }
 
 void turnQuad(const int power, const int ticks) {
-	  int initialLeft, initialRight;
-	  initialLeft = encoderGet(enc_baseLeft);
-	  initialRight = encoderGet(enc_baseRight);
+
+	  int initialLeft = encoderGet(enc_baseLeft);
+	  int initialRight = encoderGet(enc_baseRight);
 
 	  while (encoderGet(enc_baseLeft) < initialLeft + (ticks * 0.6)) {
 		    setDriveLeft(-1 * power);
@@ -184,7 +174,7 @@ void turnQuad(const int power, const int ticks) {
 		    delay(20);
 	  }
 
-	  while (encoderGet(enc_baseLeft) < initialLeft + (ticks * 0.4)) {
+	  while (encoderGet(enc_baseLeft) < initialLeft) {
 		    setDriveLeft((-1 * power / 3));
 		    setDriveRight((power + (sign(((encoderGet(enc_baseLeft) - initialLeft) - (encoderGet(enc_baseRight) - initialRight))) * power * 0.1)) / 3);
 		    delay(20);
@@ -197,31 +187,30 @@ void turnQuad(const int power, const int ticks) {
 }
 
 void turnGyro(const int power, const int deg) {
-
-// TODO: FINISH THIS FUNCTION
-
 }
 
-void moveToPosition(OdometricLocalizer *odo, const int x2, const int y2){
+void moveToPosition(OdometricLocalizer *odo, float xPos, float yPos){
+	  pidController positionPid;
+	  pidController headingPid;
+	  pos targetPos;
 
-	  float currentX = odo->xPos;
-	  float currentY = odo->yPos;
-	  float posError = eDist(currentX, currentY, x2, y2);
-	  float requiredHeading = atan2(odo->yPos, odo->yPos) * 180 / PI;
+	  targetPos.x = xPos;
+	  targetPos.y = yPos;
 
-	  float headingError = odo->heading - requiredHeading;
+	  init_PID(&positionPid, 1, 1, 1, 2);
+	  init_PID(&headingPid, 1, 1, 1, 2);
 
-	  while (headingError > requiredHeading) {
-		    setDriveLeft(sign(headingError) * 60);
-		    setDriveRight(-1 * sign(headingError) * 60);
+	  float currentDistance = eDist(odo->currentPosition, targetPos);
+	  float heading = fixAngle(dHeading(odo->currentPosition, targetPos));
 
-		    currentX = odo->xPos;
-		    currentY = odo->yPos;
-		    headingError = odo->heading - requiredHeading;
+	  while (positionPid.out > 0) {
+		    currentDistance = eDist(odo->currentPosition, targetPos);
+		    heading = fixAngle(dHeading(odo->currentPosition, targetPos));
+
+		    step_PID(&positionPid, currentDistance, 0);
+		    step_PID(&headingPid, heading, 0);
+
+		    setDriveLeft(positionPid.out * 127 - headingPid.out * 127);
+		    setDriveLeft(positionPid.out * 127 + headingPid.out * 127);
 	  }
-	  setDriveLeft(0);
-	  setDriveRight(0);
-
-
-
 }

@@ -1,34 +1,29 @@
 #include "../include/TaskManagement.h"
 #include "../include/main.h"
 
-
-
-
-
 void solenoidControlTask(void *ignore) {
 	  while (true) {
-		    if (joystickGetDigital(1, 8, JOY_RIGHT) == 1)
-			      toggleIntakeForks();
+		    if (joystickGetDigital(1, 8, JOY_RIGHT) == 1) {
+			      toggleDigitalPort(SOL_LEFT);
+			      toggleDigitalPort(SOL_RIGHT);
+		    }
+		    if (joystickGetDigital(1, 8, JOY_UP) == 1) {
+			      toggleDigitalPort(SOL_FLIP);
+		    }
 		    delay(500);
 	  }
 }
 
 void odoUpdateTask(void *ignore) {
-	  // int foo = 0;
 	  while (true) {
-		    // foo++;
 		    step_OdometricLocalizer(&mainOdo);
-
-		    // lcdPrint(LCD_PORT, 2, "%d", foo);
 		    delay(100);
 	  }
 }
 
 void joystickControlTask(void *ignore) {
 	  while (true) {
-
 		    switch (DRIVE_TYPE) {
-
 		    case false:
 			      setDriveLeft(cJoyThreshold(joystickGetAnalog(1, JOY_JOY_LV) + joystickGetAnalog(1, JOY_JOY_LH)));
 			      setDriveRight(cJoyThreshold(joystickGetAnalog(1, JOY_JOY_LV) - joystickGetAnalog(1, JOY_JOY_LH)));
@@ -78,22 +73,22 @@ void joystickControlTask(void *ignore) {
 
 void watchDogManagement(void *ignore) {
 	  do {
-		    if (taskGetState(joyControlHandle) == (TASK_DEAD || TASK_RUNNABLE) && (!TASK_RUNNING)) {
+		    if ((taskGetState(joyControlHandle) == TASK_DEAD || taskGetState(joyControlHandle) == TASK_RUNNABLE) && taskGetState(joyControlHandle) != TASK_RUNNING) {
 			      taskDelete(joyControlHandle);
 			      joyControlHandle = taskCreate(joystickControlTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 1));
 		    }
-		    if (taskGetState(solControlHandle) == (TASK_DEAD || TASK_RUNNABLE) && (!TASK_RUNNING)) {
+		    if ((taskGetState(solControlHandle) == TASK_DEAD || taskGetState(solControlHandle) == TASK_RUNNABLE) && taskGetState(solControlHandle) != TASK_RUNNING) {
 			      taskDelete(solControlHandle);
 			      solControlHandle = taskCreate(solenoidControlTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
 		    }
-		    // if (taskGetState(odoTaskHandle) == (TASK_DEAD || TASK_RUNNABLE) && (!TASK_RUNNING)) {
-		    //     taskDelete(odoTaskHandle);
-		    //     odoTaskHandle = taskCreate(odoUpdateTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 3));
-		    // }
-		    if (taskGetState(slewControlHandle) == (TASK_DEAD || TASK_RUNNABLE) && (!TASK_RUNNING)) {
-			      taskDelete(slewControlHandle);
-			      slewControlHandle = taskCreate(slewrateControl_task, 1024, NULL, (TASK_PRIORITY_HIGHEST - 1));
+		    if ((taskGetState(odoTaskHandle) == TASK_DEAD || taskGetState(odoTaskHandle) == TASK_RUNNABLE) && taskGetState(odoTaskHandle) != TASK_RUNNING) {
+			      taskDelete(odoTaskHandle);
+			      odoTaskHandle = taskCreate(odoUpdateTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 3));
 		    }
-		    delay(5000);
+		    if ((taskGetState(slewControlHandle) == TASK_DEAD || taskGetState(slewControlHandle) == TASK_RUNNABLE) && taskGetState(slewControlHandle) != TASK_RUNNING) {
+			      taskDelete(slewControlHandle);
+			      slewControlHandle = taskCreate(slewrateControl_task, 1024, NULL, (TASK_PRIORITY_HIGHEST - 2));
+		    }
+		    delay(100);
 	  } while (true);
 }
