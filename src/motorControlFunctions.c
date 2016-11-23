@@ -1,8 +1,6 @@
-/*
- * motorControlFunctions.c
- *
- *  Created on: Sep 28, 2016
- *      Author: user
+/**
+ * @Date:   2016-10-22T14:32:57+11:00
+* @Last modified time: 2016-11-23T11:10:05+11:00
  */
 
 #include "../include/main.h"
@@ -29,7 +27,7 @@ float cJoyThreshold(int input) {
 }
 
 void toggleDigitalPort(unsigned port) {
-	  digitalWrite(port, digitalRead(port) == 1 ? 0 : 1);
+	  digitalWrite(port, (digitalRead(port) == 1 ? 0 : 1));
 }
 
 void setLiftLeft(const int power) {
@@ -102,18 +100,15 @@ void driveTime(const int l_power, const int r_power, const int timeMs) {
 }
 
 void driveStraightTime(const int power, const unsigned timeMs) {
-
 	  int initialLeft = encoderGet(enc_baseLeft);
 	  int initialRight = encoderGet(enc_baseRight);
 	  unsigned startingTime = millis();
-
 	  // Drive at full power for 80% of ticks
 	  while (startingTime + (timeMs * 0.8) > millis()) {
 		    setDriveLeft(power);
 		    setDriveRight(power + (sign(((encoderGet(enc_baseLeft) - initialLeft) - (encoderGet(enc_baseRight) - initialRight))) * power * 0.1));
 		    delay(20);
 	  }
-	  startingTime = millis();
 	  // Drive at 1/3 Power for remaining 20% of ticks
 	  while (startingTime > millis()) {
 		    setDriveLeft((power / 3));

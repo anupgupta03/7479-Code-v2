@@ -25,9 +25,6 @@
 #define inchToCm(i) ((i) * 2.54)
 #define cmToInch(i) ((i) / 2.54)
 
-#define radToDeg(i) ((i) * (180 / PI))
-#define degToRad(i) ((i) * (PI / 180))
-
 #define mapCubic(i) (((2 * cube(i)) / 48387) + ((i) / 3))
 
 #define DRIVE_ENABLED true
@@ -102,10 +99,5 @@
 
 typedef enum t_Direction { LEFT, RIGHT } Direction;
 
-typedef struct pos_t {
-	  float x;
-	  float y;
-	  float h;
-} pos;
 
 #endif /* SRC_USERDEFINITIONS_H_ */

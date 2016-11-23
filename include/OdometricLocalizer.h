@@ -2,18 +2,23 @@
 #define ODOMETRICLOCALIZER_H_INCLUDED
 #include <API.h>
 #include "../include/main.h"
+// Math helpers
+#define radToDeg(i) ((i) * (180 / PI))
+#define degToRad(i) ((i) * (PI / 180))
 
 /**
- * Enum for different types of encoders
+ * Struct to represent a position of a robot
  */
-typedef enum t_EncoderTypes { IME, Optical } EncoderTypes;
+typedef struct pos_t {
+	  float x;
+	  float y;
+	  float h;
+} pos;
 
 /**
- * Struct to represent an OdometricLocalizer for a robot
+ * Struct to represent an OdometricLocalizer
  */
 typedef struct t_OdometricLocalizer {
-	  // Type of encoder being measured
-	  EncoderTypes encoderType;
 	  // Previous Encoder Counts
 	  int previousLeftCounts;
 	  int previousRightCounts;
@@ -21,7 +26,6 @@ typedef struct t_OdometricLocalizer {
 	  // Sensors attached to the axis of revolution
 	  Encoder leftEncoder;
 	  Encoder rightEncoder;
-	  Gyro gyro;
 	  // Distance travelled per count (inches)
 	  float distancePerCount;
 	  // Radians per encoder count
@@ -37,7 +41,7 @@ typedef struct t_OdometricLocalizer {
  * @param newY New Y position to store
  * @param newH New heading to store
  */
-void changePos(OdometricLocalizer *odo, float newX, float newY, float newH);
+void setPos(OdometricLocalizer *odo, float newX, float newY, float newH);
 
 /**
  * Get encoder reading based on OdometricLocalizer Parameters
@@ -53,12 +57,11 @@ int getEncoderReading(OdometricLocalizer *odo, Direction side);
  * @param type                Type of encoder being used
  * @param leftEncoder         Encoder object for the left side of the drivetrain
  * @param rightEncoder        Encoder object for the right side of the drivetrain
- * @param gyro                Gyro object for rotational measurement
  * @param wheelDiameter       Diameter of wheels
  * @param trackWidth          Distance between centers of wheels
  * @param countsPerRevolution Number of encoder counts per revolution
  */
-void init_OdometricLocalizer(OdometricLocalizer *odo, EncoderTypes type, Encoder leftEncoder, Encoder rightEncoder, Gyro gyro, float wheelDiameter,  float trackWidth, float countsPerRevolution);
+void init_OdometricLocalizer(OdometricLocalizer *odo, Encoder leftEncoder, Encoder rightEncoder, float wheelDiameter,  float trackWidth, float countsPerRevolution);
 
 /**
  * Steps an OdometricLocalizer through calculations
