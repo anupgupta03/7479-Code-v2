@@ -1,13 +1,13 @@
-/*
- * slewRateController.c
- *
- *  Created on: Oct 5, 2016
- *      Author: natty
+/**
+ * @Date:   2016-10-22T14:32:57+11:00
+* @Last modified time: 2016-11-23T11:35:59+11:00
  */
 #include "../include/slewRateController.h"
 
+/**
+ * Main array of drive motor objects
+ */
 driveMotor driveMotors[MOTOR_NUM];
-
 /*
  * Adds and initializes a motor (by name) to the motor array
  */
@@ -59,8 +59,7 @@ void slewrateControl_task(void *ignore) {
 		    for (motorIndex = 0; motorIndex < MOTOR_NUM; motorIndex++) {
 			      currentMotor = &(driveMotors[motorIndex]);
 			      //Skip over a motor if it isn't active
-			      if (!currentMotor->active)
-					continue;
+			      if (!currentMotor->active) continue;
 
 			      //Keep internal memory access to a minimum
 			      motorTmpArtSpd = currentMotor->artSpeed;

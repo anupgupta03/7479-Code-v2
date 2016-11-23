@@ -1,12 +1,12 @@
-/*
- * UserDefinitions.h
- *
- *  Created on: Oct 4, 2016
- *      Author: natty
- */
+/**
+* @Date:   2016-10-22T14:32:57+11:00
+* @Last modified time: 2016-11-23T11:35:17+11:00
+*/
 
 #ifndef SRC_USERDEFINITIONS_H_
 #define SRC_USERDEFINITIONS_H_
+
+typedef enum t_Direction { LEFT, RIGHT } Direction;
 
 // Math
 #include <math.h>
@@ -97,7 +97,6 @@
 // Gyro Port (Analog)
 #define GYRO_PORT 1
 
-typedef enum t_Direction { LEFT, RIGHT } Direction;
 
 
 #endif /* SRC_USERDEFINITIONS_H_ */
