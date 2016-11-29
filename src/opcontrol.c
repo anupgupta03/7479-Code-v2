@@ -1,6 +1,6 @@
 /**
  * @Date:   2016-10-22T14:32:24+11:00
-* @Last modified time: 2016-11-23T11:35:49+11:00
+ * @Last modified time: 2016-11-23T11:35:49+11:00
  */
 
 #include "../include/main.h"
@@ -24,10 +24,10 @@ void operatorControl() {
 
 	  while (true) {
 
-		    if ((taskGetState(watchdogHandle) == TASK_DEAD || taskGetState(watchdogHandle) ==  TASK_RUNNABLE) && taskGetState(watchdogHandle) != TASK_RUNNING) {
-			      taskDelete(watchdogHandle);
-			      taskCreate(watchDogManagement, 64, NULL, TASK_PRIORITY_LOWEST + 1);
-		    }
+		    // if ((taskGetState(watchdogHandle) == TASK_DEAD || taskGetState(watchdogHandle) ==  TASK_RUNNABLE) && taskGetState(watchdogHandle) != TASK_RUNNING) {
+		    //     taskDelete(watchdogHandle);
+		    //     taskCreate(watchDogManagement, 64, NULL, TASK_PRIORITY_LOWEST + 1);
+		    // }
 
 		    // lcdPrint(LCD_PORT, 1, "Main: %1.2f%s", (double)powerLevelMain() / 1000.0,"V");
 		    // lcdPrint(LCD_PORT, 2, "Backup: %1.2f%s",(double)powerLevelBackup() / 1000.0, "V");

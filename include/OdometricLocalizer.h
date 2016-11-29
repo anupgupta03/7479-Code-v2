@@ -37,6 +37,9 @@ typedef struct t_OdometricLocalizer {
 	  float radiansPerCount;
 	  //Current Position
 	  pos currentPosition;
+	// float x;
+	// float y;
+	// float h;
 } OdometricLocalizer;
 
 /**
@@ -47,14 +50,6 @@ typedef struct t_OdometricLocalizer {
  * @param newH New heading to store
  */
 void setPos(OdometricLocalizer *odo, float newX, float newY, float newH);
-
-/**
- * Get encoder reading based on OdometricLocalizer Parameters
- * @param  odo  OdometricLocalizer to modify
- * @param  side Drive side to retrieve encoder values from
- * @return      Encoder value requested
- */
-int getEncoderReading(OdometricLocalizer *odo, Direction side);
 
 /**
  * Initializes an OdometricLocalizer with provided parameters and does init math

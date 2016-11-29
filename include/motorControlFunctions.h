@@ -90,6 +90,7 @@ void driveStraightTime(const int power, const unsigned timeMs);
  * @param timeMs Time to drive
  */
 void turnTime(const int power, const int timeMs);
+void driveQuadPID(const int ticks);
 /**
  * Turns using the gyro sensor
  * @param power Max power sent to the drive

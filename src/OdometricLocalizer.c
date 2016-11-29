@@ -21,7 +21,7 @@ void init_OdometricLocalizer(OdometricLocalizer *odo, Encoder leftEncoder, Encod
 	  // Calculate radians travelled per count
 	  odo->radiansPerCount = (PI * (wheelDiameter / trackWidth)) / countsPerRevolution;
 	  // Set position to 0,0,90
-	  setPos(odo, 0, 0, 90);
+	  setPos(odo, 0, 0, 0);
 	  // Set previous counts
 	  odo->previousLeftCounts = encoderGet(odo->leftEncoder);
 	  odo->previousRightCounts = encoderGet(odo->rightEncoder);
@@ -36,7 +36,7 @@ void step_OdometricLocalizer(OdometricLocalizer *odo) {
 	  // Calculate change in Right side
 	  int dRightCounts = rightCounts - odo->previousRightCounts;
 	  //Return if insignificant
-	  if (dLeftCounts < 2 && dRightCounts < 2) return;
+	  // if (dLeftCounts < 2 && dRightCounts < 2) return;
 	  // Calcualte change in distance travelled
 	  float dDistance = 0.5 * (float)(dLeftCounts + dRightCounts) * odo->distancePerCount;
 	  // Calculate change in heading
@@ -45,10 +45,12 @@ void step_OdometricLocalizer(OdometricLocalizer *odo) {
 	  float dX = dDistance * (float)cos(odo->currentPosition.h + (0.5 * dH));
 	  // Calcualte change in Y position
 	  float dY = dDistance * (float)sin(odo->currentPosition.h + (0.5 * dH));
+
 	  // Add each change
 	  odo->currentPosition.x += dX;
 	  odo->currentPosition.y += dY;
 	  odo->currentPosition.h += dH;
+
 	  // Limit heading to [-PI, PI)
 	  if (odo->currentPosition.h < 0.0) {
 		    odo->currentPosition.h += 360.0;
