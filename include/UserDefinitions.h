@@ -54,19 +54,21 @@ typedef enum t_Direction { LEFT, RIGHT } Direction;
 #define JOYSTICK_THRESHOLD 10
 
 // Motor Defines
+#define MOTOR_LIFT_LEFT_BOT 1
 #define MOTOR_BASE_FRONT_LEFT 2
 #define MOTOR_BASE_FRONT_RIGHT 3 // Reversed
 #define MOTOR_LIFT_LEFT_TOP 4
-#define MOTOR_LIFT_LEFT_BOT 5
+#define MOTOR_LIFT_LEFT_MID 5
 #define MOTOR_LIFT_RIGHT_TOP 6  // Reversed
-#define MOTOR_LIFT_RIGHT_BOT 7  // Reversed
+#define MOTOR_LIFT_RIGHT_MID 7  // Reversed
 #define MOTOR_BASE_BACK_RIGHT 8 // Reversed
 #define MOTOR_BASE_BACK_LEFT 9
+#define MOTOR_LIFT_RIGHT_BOT 10
 
 // Solenoid Ports (Digital)
 #define SOL_LEFT 1
 #define SOL_RIGHT 2
-#define SOL_FLIP 3
+#define SOL_FLIP 12
 
 // Optical Encoder Defines (Digital)
 #define QUAD_BASE_LEFT 3

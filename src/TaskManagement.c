@@ -14,7 +14,7 @@ void solenoidControlTask(void *ignore) {
 		    if (joystickGetDigital(1, 8, JOY_UP) == 1) {
 			      toggleDigitalPort(SOL_FLIP);
 		    }
-		    delay(500);
+		    delay(250);
 	  }
 }
 
@@ -83,7 +83,7 @@ void watchDogManagement(void *ignore) {
 		    }
 		    if ((taskGetState(solControlHandle) == TASK_DEAD || taskGetState(solControlHandle) == TASK_RUNNABLE) && taskGetState(solControlHandle) != TASK_RUNNING) {
 			      taskDelete(solControlHandle);
-			      solControlHandle = taskCreate(solenoidControlTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+			      solControlHandle = taskCreate(solenoidControlTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT + 2);
 		    }
 		    if ((taskGetState(odoTaskHandle) == TASK_DEAD || taskGetState(odoTaskHandle) == TASK_RUNNABLE) && taskGetState(odoTaskHandle) != TASK_RUNNING) {
 			      taskDelete(odoTaskHandle);

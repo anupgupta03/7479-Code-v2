@@ -34,10 +34,12 @@ void setLiftLeft(const int power) {
 	  switch (LIFT_SLEW_CONTROL_ENABLED) {
 	  case true:
 		    setMotorSpeed(MOTOR_LIFT_LEFT_TOP, (-1 * power));
+		    setMotorSpeed(MOTOR_LIFT_LEFT_MID, (-1 * power));
 		    setMotorSpeed(MOTOR_LIFT_LEFT_BOT, (-1 * power));
 		    break;
 	  case false:
 		    motorSet(MOTOR_LIFT_LEFT_TOP, (-1 * power));
+		    motorSet(MOTOR_LIFT_LEFT_MID, (-1 * power));
 		    motorSet(MOTOR_LIFT_LEFT_BOT, (-1 * power));
 		    break;
 	  }
@@ -47,10 +49,12 @@ void setLiftRight(const int power) {
 	  switch (LIFT_SLEW_CONTROL_ENABLED) {
 	  case true:
 		    setMotorSpeed(MOTOR_LIFT_RIGHT_TOP, power);
+		    setMotorSpeed(MOTOR_LIFT_RIGHT_MID, -1 * power);
 		    setMotorSpeed(MOTOR_LIFT_RIGHT_BOT, power);
 		    break;
 	  case false:
 		    motorSet(MOTOR_LIFT_RIGHT_TOP, power);
+		    motorSet(MOTOR_LIFT_RIGHT_MID, -1 * power);
 		    motorSet(MOTOR_LIFT_RIGHT_BOT, power);
 		    break;
 	  }
