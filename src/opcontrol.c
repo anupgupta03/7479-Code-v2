@@ -12,15 +12,19 @@ void operatorControl() {
 	  LIFT_SLEW_CONTROL_ENABLED = true;
 	  BASE_SLEW_CONTROL_ENABLED = true;
 
-	  joyControlHandle = taskCreate(joystickControlTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 1));
-	  solControlHandle = taskCreate(solenoidControlTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
-	  odoTaskHandle = taskCreate(odoUpdateTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 3));
+	  //joyControlHandle = taskCreate(joystickControlTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 1));
+	  //solControlHandle = taskCreate(solenoidControlTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+	  //odoTaskHandle = taskCreate(odoUpdateTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 3));
 	  slewControlHandle = taskCreate(slewrateControl_task, 1024, NULL, (TASK_PRIORITY_HIGHEST - 1));
-	  watchdogHandle = taskCreate(watchDogManagement, 64, NULL, TASK_PRIORITY_LOWEST + 1);
+	  //watchdogHandle = taskCreate(watchDogManagement, 64, NULL, TASK_PRIORITY_LOWEST + 1);
 
 	  lcdClear(LCD_PORT);
 	  lcdPrint(LCD_PORT, 1, "op init complete");
-	  lcdClear(LCD_PORT);
+	  // lcdClear(LCD_PORT);
+
+	  delay(1000);
+	  driveQuadPID(1000);
+	  // lcdClear(LCD_PORT);
 
 	  while (true) {
 
@@ -34,8 +38,8 @@ void operatorControl() {
 		    // lcdPrint(LCD_PORT, 1, "%d", encoderGet(enc_baseLeft));
 		    // lcdPrint(LCD_PORT, 2, "%d", encoderGet(enc_baseRight));
 		    // lcdPrint(LCD_PORT, 1, "%d", gyroGet(mainGyro));
-		    lcdPrint(LCD_PORT, 1, "(%.2f, %.2f)", mainOdo.currentPosition.x, mainOdo.currentPosition.y);
-		    lcdPrint(LCD_PORT, 2, "%f", mainOdo.currentPosition.h);
+		    // lcdPrint(LCD_PORT, 1, "(%.2f, %.2f)", mainOdo.currentPosition.x, mainOdo.currentPosition.y);
+		    // lcdPrint(LCD_PORT, 2, "%f", mainOdo.currentPosition.h);
 
 		    delay(20);
 	  }

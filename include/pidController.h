@@ -7,6 +7,10 @@
 
 /**
  * Struct to represent a PID controller
+ * P - Bigger kP == smaller stopping distance
+ * I - Bigger kI == harsher correction i.e. more power for lower error
+ * D - Bigger kD == Reduces velocity
+ * Bias - Minimum value for movement
  */
 typedef struct pidController_t {
 		// Constant of Proportion
@@ -25,6 +29,8 @@ typedef struct pidController_t {
 	  unsigned previousTime;
 		// Out Value
 	  float out;
+		// Output Bias
+		float bias;
 } pidController;
 
 /**
@@ -35,7 +41,7 @@ typedef struct pidController_t {
  * @param kD            Constant of Derivative
  * @param integralLimit Integral Limit
  */
-void init_PID(pidController *pid, float kP, float kI, float kD, float integralLimit);
+void init_PID(pidController *pid, float kP, float kI, float kD, float integralLimit, float bias);
 /**
  * Steps a PID controller through calculations
  * @param pid     pidController to step

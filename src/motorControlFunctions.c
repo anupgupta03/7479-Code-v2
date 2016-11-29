@@ -187,16 +187,24 @@ void turnQuad(const int power, const int ticks) {
 
 void driveQuadPID(const int ticks){
 	  pidController pid;
-	  int initialLeft = encoderGet(enc_baseLeft);
-	  int initialRight = encoderGet(enc_baseRight);
-	  init_PID(&pid, 1, 0.026, 0.07, 2);
-	  float targetTicks = initialLeft + ticks;
-	  step_PID(&pid, initialLeft, targetTicks);
-	  while (abs(pid.out) > 0)
+	  lcdClear(LCD_PORT);
+
+	  // int initialLeft = encoderGet(enc_baseLeft);
+	  // int initialRight = encoderGet(enc_baseRight);
+	  init_PID(&pid, 0.001, 0.00001, 0.3, 0.15, 0.15);
+	  float targetTicks = encoderGet(enc_baseLeft) + ticks;
+	  step_PID(&pid, encoderGet(enc_baseLeft), targetTicks);
+	  _Bool wasBad = abs(targetTicks - encoderGet(enc_baseLeft)) > 10;
+	  while (abs(targetTicks - encoderGet(enc_baseLeft)) > 10 || wasBad)
 	  {
+		    wasBad = abs(targetTicks - encoderGet(enc_baseLeft)) > 10;
 		    step_PID(&pid, encoderGet(enc_baseLeft), targetTicks);
 		    setDriveLeft(pid.out * 127);
-		    setDriveRight((pid.out * 127) + (sign(((encoderGet(enc_baseLeft) - initialLeft) - (encoderGet(enc_baseRight) - initialRight))) * pid.out * 0.1));
+		    setDriveRight(pid.out * 127);
+		    lcdPrint(LCD_PORT, 1, "%d, %d", encoderGet(enc_baseLeft), encoderGet(enc_baseRight));
+
+		    delay(100);
+		    //  + (sign(((encoderGet(enc_baseLeft) - initialLeft) - (encoderGet(enc_baseRight) - initialRight))) * pid.out * 127 * 0.1))
 	  }
 	  setDriveLeft(0);
 	  setDriveRight(0);
@@ -206,27 +214,30 @@ void turnGyro(const int power, const int deg) {
 }
 
 void moveToPosition(OdometricLocalizer *odo, float xPos, float yPos){
-	  pidController positionPid;
-	  pidController headingPid;
-	  pos targetPos;
-
-	  targetPos.x = xPos;
-	  targetPos.y = yPos;
-
-	  init_PID(&positionPid, 0.06, 0.026, 0.07, 2);
-	  init_PID(&headingPid, 0.06, 0.026, 0.07, 2);
-
-	  float currentDistance = eDist(odo->currentPosition, targetPos);
-	  float heading = fixAngle(dHeading(odo->currentPosition, targetPos));
-
-	  while (positionPid.out > 0) {
-		    currentDistance = eDist(odo->currentPosition, targetPos);
-		    heading = fixAngle(dHeading(odo->currentPosition, targetPos));
-
-		    step_PID(&positionPid, currentDistance, 0);
-		    step_PID(&headingPid, heading, 0);
-
-		    setDriveLeft((positionPid.out * 127) - (headingPid.out * 127));
-		    setDriveLeft((positionPid.out * 127) + (headingPid.out * 127));
-	  }
+	  // pidController positionPid;
+	  // pidController headingPid;
+	  // pos targetPos;
+	  //
+	  // targetPos.x = xPos;
+	  // targetPos.y = yPos;
+	  //
+	  // init_PID(&positionPid, 1, 0, 0, 2);
+	  // init_PID(&headingPid, 1, 0, 0, 2);
+	  //
+	  // float currentDistance = eDist(odo->currentPosition, targetPos);
+	  // float heading = fixAngle(dHeading(odo->currentPosition, targetPos));
+	  //
+	  // while (1==1) {
+	  //
+	  //     currentDistance = eDist(odo->currentPosition, targetPos);
+	  //     heading = fixAngle(dHeading(odo->currentPosition, targetPos));
+	  //
+	  //     step_PID(&positionPid, currentDistance, 0);
+	  //     step_PID(&headingPid, heading, 0);
+	  //
+	  //     setDriveLeft((positionPid.out * 127) - (headingPid.out * 127));
+	  //     setDriveLeft((positionPid.out * 127) + (headingPid.out * 127));
+	  //
+	  //     delay(100);
+	  // }
 }

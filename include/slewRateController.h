@@ -22,7 +22,7 @@
 #define MOTOR_MAX_VALUE         127    //Maximum power
 #define MOTOR_DEFAULT_SLEW_RATE 10     //Feels like nearly no slewing to a driver
 #define MOTOR_FAST_SLEW_RATE    256    //No slewing in output
-#define MOTOR_SLOW_SLEW_RATE    350
+#define MOTOR_SLOW_SLEW_RATE    300
 #define LIFT_SLOW_SLEW_RATE     450
 #define MOTOR_TASK_DELAY        5     //Wait 5ms between batch motor power updates
 

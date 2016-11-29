@@ -6,7 +6,7 @@
 #include "../include/main.h"
 #include "../include/pidController.h"
 
-void init_PID(pidController *pid, float kP, float kI, float kD, float integralLimit){
+void init_PID(pidController *pid, float kP, float kI, float kD, float integralLimit, float bias){
 	  pid->kP = kP;
 	  pid->kI = kI;
 	  pid->kD = kD;
@@ -17,6 +17,7 @@ void init_PID(pidController *pid, float kP, float kI, float kD, float integralLi
 
 	  pid->previousTime = millis();
 	  pid->out = 0;
+	  pid->bias = bias;
 }
 
 void step_PID(pidController *pid, float current, float target){
@@ -27,7 +28,7 @@ void step_PID(pidController *pid, float current, float target){
 	  float error = target - current;
 	  float P = pid->kP * error;
 	  float I = (pid->kI * error * (currentTime - pid->previousTime)) + pid->previousIntegral;
-	  float D = pid->kD * ((pid->previousError - error) / (currentTime - pid->previousTime));
+	  float D = -1 * pid->kD * ((pid->previousError - error) / (currentTime - pid->previousTime));
 
 	  if (I < -1 * pid->integralLimit) {
 		    I = -1 * pid->integralLimit;
@@ -47,5 +48,8 @@ void step_PID(pidController *pid, float current, float target){
 	  }
 	  if (pid->out > 1.0) {
 		    pid->out = 1.0;
+	  }
+	  if (pid->out > -1 * pid->bias && pid->out < pid->bias) {
+		    pid->out = sign(pid->out) * pid->bias;
 	  }
 }
