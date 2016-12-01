@@ -1,92 +1,15 @@
 /**
  * @Date:   2016-11-30T10:50:44+11:00
- * @Last modified time: 2016-11-30T10:52:14+11:00
+* @Last modified time: 2016-12-01T20:09:47+11:00
  */
 #include "../include/main.h"
 #include "../include/menuControl.h"
 #include "string.h"
 
-#define LCD_UART uart2
-
-// Different types of menus
-#define MENUTYPE_VALUE 0
-#define MENUTYPE_CHOICE 1
-#define MENUTYPE_SUB 2
-#define MENUTYPE_EXIT 99
-
-// Default for LCD line 2 display
-#define DEFAULT_LINE2 "<<            >>"
-#define SUBMENU_SELECT_TEXT "<<   SELECT   >>"
-#define EXIT_MENU_SELECT "<<     OK     >>"
-
-// A menu list
-// holds a double linked list of menus
-typedef struct _menuList {
-	  // number of menus in this list
-	  int num;
-	  // pointer to first menu
-	  struct _menu* first;
-	  // pointer to last menu
-	  struct _menu* last;
-	  // pointer to current menu
-	  struct _menu* current;
-} menuList;
-
-// A menu structure
-typedef struct _menu {
-	  // lcd display text
-	  char lcd_line_1[20];
-	  char lcd_line_2[20];
-
-	  // pointes to next and previous menus
-	  struct _menu* next;
-	  struct _menu* prev;
-
-	  // the type of this menu
-	  int menu_type;
-
-	  // value (used as index for choice menus)
-	  int value;
-	  // maximum value of a "value" menu
-	  int max_value;
-
-	  // list of choices
-	  int cnum;
-	  struct _clist* cfirst;
-	  struct _clist* cend;
-
-	  // pointer to a menu list - a sub menu
-	  menuList* list;
-} menu;
-
-// A choice structure
-typedef struct _clist {
-	  // name of choice
-	  char name[20];
-	  // pointer to next choice
-	  struct _clist* next;
-	  // pointer to previous choice
-	  struct _clist* prev;
-} clist;
-
-// Enums for button pushes in the menu state machine
-typedef enum _userControl {
-	  initializeButton = 0,
-	  noButton,
-	  leftButtonDown,
-	  rightButtonDown,
-	  centerButtonDown
-} userControl;
-
 // Storage for our menus, choices and lists
 // We use this instead of dynamic memory allocation as it is not available
-#define MAX_MEN_LISTS 4
 menuList Lists[MAX_MEN_LISTS];
-
-#define MAX_MENUS 10
 menu Menus[MAX_MENUS];
-
-#define MAX_CHOICES 10
 clist MenuChoices[MAX_CHOICES];
 
 // Indexes for next item to be allocated
@@ -96,13 +19,11 @@ static int nc = 0;
 
 /*-----------------------------------------------------------------------------*/
 /*                                                                             */
-/*      Create a new menu list                                                 */
+/*      Create a new menu list */
 /*                                                                             */
 /*-----------------------------------------------------------------------------*/
 
-menuList*
-menuListInit()
-{
+menuList* menuListInit() {
 	  menuList* list;
 
 	  list = &(Lists[nl++]);
@@ -116,22 +37,19 @@ menuListInit()
 
 /*-----------------------------------------------------------------------------*/
 /*                                                                             */
-/*      Add a menu to a menu list                                              */
+/*      Add a menu to a menu list */
 /*                                                                             */
 /*-----------------------------------------------------------------------------*/
 
-int menuListAddMenu(menuList* list, menu* m)
-{
+int menuListAddMenu(menuList* list, menu* m) {
 	  menu* TopMenu;
 	  menu* EndMenu;
 
 	  // check for valid list
-	  if (list == NULL)
-		    return (-1);
+	  if (list == NULL) return (-1);
 
 	  // check for valid menu
-	  if (m == NULL)
-		    return (-2);
+	  if (m == NULL) return (-2);
 
 	  if (list->num == 0) {
 		    // first entry
@@ -141,8 +59,7 @@ int menuListAddMenu(menuList* list, menu* m)
 		    // double linked list that we want to rate so pint at ourself
 		    m->next = (menu*)m;
 		    m->prev = (menu*)m;
-	  }
-	  else {
+	  } else {
 		    // get the menus at start and end of the list
 		    TopMenu = list->first;
 		    EndMenu = list->last;
@@ -170,12 +87,11 @@ int menuListAddMenu(menuList* list, menu* m)
 
 /*-----------------------------------------------------------------------------*/
 /*                                                                             */
-/*  Initialize a menu and link into the menu list                              */
+/*  Initialize a menu and link into the menu list */
 /*                                                                             */
 /*-----------------------------------------------------------------------------*/
 
-menu* menuInit(menuList* list, const char* name, int type, int max)
-{
+menu* menuInit(menuList* list, const char* name, int type, int max) {
 	  menu* m;
 
 	  // We have no malloc so use allocate from an array
@@ -223,19 +139,16 @@ menu* menuInit(menuList* list, const char* name, int type, int max)
 
 /*-----------------------------------------------------------------------------*/
 /*                                                                             */
-/*  Add one choice to a menu                                                   */
+/*  Add one choice to a menu */
 /*                                                                             */
 /*-----------------------------------------------------------------------------*/
 
-clist*
-MenuAddChoice(menu* m, const char* name)
-{
+clist* MenuAddChoice(menu* m, const char* name) {
 	  clist* c;
 	  clist* end;
 
 	  // check for null pointer
-	  if (m == NULL)
-		    return (NULL);
+	  if (m == NULL) return (NULL);
 
 	  // We have no malloc so use allocate from an array
 	  c = &(MenuChoices[nc++]);
@@ -246,8 +159,7 @@ MenuAddChoice(menu* m, const char* name)
 		    m->cend = c;
 		    c->prev = (clist*)NULL;
 		    c->next = (clist*)NULL;
-	  }
-	  else {
+	  } else {
 		    // subsequent choices
 		    end = m->cend;
 
@@ -271,53 +183,47 @@ MenuAddChoice(menu* m, const char* name)
 
 /*-----------------------------------------------------------------------------*/
 /*                                                                             */
-/*      Update the LCD display with the menu information                       */
+/*      Update the LCD display with the menu information */
 /*                                                                             */
 /*-----------------------------------------------------------------------------*/
 
-void menuLcdUpdate(menu* m)
-{
-	  lcdClear(LCD_UART);
-	  lcdPrint(LCD_UART, 1, m->lcd_line_1);
-	  lcdPrint(LCD_UART, 2, m->lcd_line_2);
+void menuLcdUpdate(menu* m) {
+	  lcdClear(LCD_PORT);
+	  lcdPrint(LCD_PORT, 1, m->lcd_line_1);
+	  lcdPrint(LCD_PORT, 2, m->lcd_line_2);
 }
 
 /*-----------------------------------------------------------------------------*/
 /*                                                                             */
-/*      Create a value display for the LCD line 2                              */
+/*      Create a value display for the LCD line 2 */
 /*                                                                             */
 /*-----------------------------------------------------------------------------*/
 
-void menuCreateValueDisplay(menu* m)
-{
+void menuCreateValueDisplay(menu* m) {
 	  sprintf(&(m->lcd_line_2[0]), "<<    %04d    >>", m->value);
 }
 
 /*-----------------------------------------------------------------------------*/
 /*                                                                             */
-/*      Create a choice display for the LCD line 2                             */
+/*      Create a choice display for the LCD line 2 */
 /*                                                                             */
 /*-----------------------------------------------------------------------------*/
 
-void menuCreateChoiceDisplay(menu* m)
-{
+void menuCreateChoiceDisplay(menu* m) {
 	  int i;
 	  clist* c;
 	  int len;
 
 	  // NULL pointer checks
-	  if (m == NULL)
-		    return;
+	  if (m == NULL) return;
 
 	  // Find choice in list
-	  if ((c = m->cfirst) == NULL)
-		    return;
+	  if ((c = m->cfirst) == NULL) return;
 
 	  // move through list to find indexd choice
 	  // inefficient for a large number of choices but ok for this demo
 	  for (i = 0; i < m->value; i++) {
-		    if (c->next != NULL)
-			      c = c->next;
+		    if (c->next != NULL) c = c->next;
 	  }
 
 	  // get length of choice
@@ -327,8 +233,7 @@ void menuCreateChoiceDisplay(menu* m)
 	  sprintf(&(m->lcd_line_2[0]), "<<            >>");
 
 	  // len needs to be 12 or less
-	  if (len > 12)
-		    len = 12;
+	  if (len > 12) len = 12;
 
 	  // overlay choice to display
 	  for (i = 0; i < len; i++)
@@ -337,12 +242,11 @@ void menuCreateChoiceDisplay(menu* m)
 
 /*-----------------------------------------------------------------------------*/
 /*                                                                             */
-/*      Update the text for the LCD line 2 based on the menu type              */
+/*      Update the text for the LCD line 2 based on the menu type */
 /*                                                                             */
 /*-----------------------------------------------------------------------------*/
 
-void menuCreateDisplay(menu* m)
-{
+void menuCreateDisplay(menu* m) {
 	  if (m->menu_type == MENUTYPE_VALUE)
 		    menuCreateValueDisplay(m);
 	  else if (m->menu_type == MENUTYPE_CHOICE)
@@ -351,19 +255,18 @@ void menuCreateDisplay(menu* m)
 
 /*-----------------------------------------------------------------------------*/
 /*                                                                             */
-/*      Run a menu list                                                        */
+/*      Run a menu list */
 /*                                                                             */
 /*-----------------------------------------------------------------------------*/
 
-int menuRun(menuList* list)
-{
+int menuRun(menuList* list) {
 	  bool done = false;
 	  int LcdButtons;
 	  userControl buttonState = initializeButton;
 
 	  while (!done) {
 		    // Read LCD buttons
-		    LcdButtons = lcdReadButtons(LCD_UART);
+		    LcdButtons = lcdReadButtons(LCD_PORT);
 
 		    switch (buttonState) {
 		    case initializeButton:
@@ -375,8 +278,7 @@ int menuRun(menuList* list)
 			      menuLcdUpdate(list->current);
 
 			      // Wait here until nothing is pressed
-			      if (LcdButtons == 0)
-					buttonState = noButton;
+			      if (LcdButtons == 0) buttonState = noButton;
 			      break;
 
 		    case noButton:
@@ -385,8 +287,7 @@ int menuRun(menuList* list)
 					buttonState = leftButtonDown;
 
 					// previous menu
-					if (list->current->prev != NULL)
-						  list->current = list->current->prev;
+					if (list->current->prev != NULL) list->current = list->current->prev;
 			      }
 
 			      // Check right button
@@ -394,8 +295,7 @@ int menuRun(menuList* list)
 					buttonState = rightButtonDown;
 
 					// next menu
-					if (list->current->next != NULL)
-						  list->current = list->current->next;
+					if (list->current->next != NULL) list->current = list->current->next;
 			      }
 
 			      // Check center button
@@ -432,7 +332,8 @@ int menuRun(menuList* list)
 							    // recursively enter menu run for sub menu
 							    menuRun(list->current->list);
 							    // now change the menu name to match the selection
-							    strcpy(list->current->lcd_line_1, list->current->list->current->lcd_line_1);
+							    strcpy(list->current->lcd_line_1,
+							           list->current->list->current->lcd_line_1);
 						  }
 						  break;
 
@@ -457,18 +358,17 @@ int menuRun(menuList* list)
 
 /*-----------------------------------------------------------------------------*/
 /*                                                                             */
-/*      Demo code                                                              */
+/*      Demo code */
 /*                                                                             */
 /*-----------------------------------------------------------------------------*/
 
-void operatorControl()
-{
+void operatorControl() {
 	  menuList* mainMenu;
 	  menuList* autonomousSubMenu;
 	  menu* m;
 
-	  lcdInit(LCD_UART);
-	  lcdSetBacklight(LCD_UART, true);
+	  lcdInit(LCD_PORT);
+	  lcdSetBacklight(LCD_PORT, true);
 
 	  mainMenu = menuListInit();
 	  autonomousSubMenu = menuListInit();
@@ -498,9 +398,9 @@ void operatorControl()
 	  menuRun(mainMenu);
 
 	  // menu system done so do something
-	  lcdClear(LCD_UART);
+	  lcdClear(LCD_PORT);
 
-	  lcdSetText(LCD_UART, 1, "Code running");
+	  lcdSetText(LCD_PORT, 1, "Code running");
 
 	  int time = 0;
 
@@ -508,7 +408,7 @@ void operatorControl()
 		    char s[20];
 
 		    sprintf(s, "time %.1f", (float)time / 1000.0);
-		    lcdSetText(LCD_UART, 2, s);
+		    lcdSetText(LCD_PORT, 2, s);
 		    time += 100;
 		    delay(100);
 	  }
