@@ -1,6 +1,6 @@
 /**
  * @Date:   2016-10-22T14:32:24+11:00
- * @Last modified time: 2016-11-23T11:35:49+11:00
+* @Last modified time: 2016-12-02T11:34:10+11:00
  */
 
 #include "../include/main.h"
@@ -33,8 +33,8 @@ void operatorControl() {
 		    //     taskCreate(watchDogManagement, 64, NULL, TASK_PRIORITY_LOWEST + 1);
 		    // }
 
-		    // lcdPrint(LCD_PORT, 1, "Main: %1.2f%s", (double)powerLevelMain() / 1000.0,"V");
-		    // lcdPrint(LCD_PORT, 2, "Backup: %1.2f%s",(double)powerLevelBackup() / 1000.0, "V");
+		    lcdPrint(LCD_PORT, 1, "Main: %d.%03d V", powerLevelMain() / 1000, powerLevelMain()%1000);
+		    lcdPrint(LCD_PORT, 2, "Backup: %d.%03d V", powerLevelBackup() / 1000, powerLevelBackup()%1000);
 		    // lcdPrint(LCD_PORT, 1, "%d", encoderGet(enc_baseLeft));
 		    // lcdPrint(LCD_PORT, 2, "%d", encoderGet(enc_baseRight));
 		    // lcdPrint(LCD_PORT, 1, "%d", gyroGet(mainGyro));
