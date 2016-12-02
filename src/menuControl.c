@@ -1,6 +1,6 @@
 /**
  * @Date:   2016-11-30T10:50:44+11:00
-* @Last modified time: 2016-12-02T21:02:26+11:00
+* @Last modified time: 2016-12-02T22:23:42+11:00
  */
 #include "../include/main.h"
 #include "../include/menuControl.h"
@@ -258,6 +258,9 @@ int menuRun(menuList* list) {
 						  list->current->value++;
 						  // check for end of choice list and wrap
 						  if (list->current->value >= list->current->cnum) list->current->value = 0;
+						  // invoke(list->current->func);
+						  // printf("CLICK");
+						  // printf("%d", globalAutonFunction);
 						  break;
 					case MENUTYPE_SUB:
 						  // selection using a sub menu
@@ -267,9 +270,6 @@ int menuRun(menuList* list) {
 							    // now change the menu name to match the selection
 							    strcpy(list->current->lcd_line_1, list->current->list->current->lcd_line_1);
 						  }
-						  break;
-					case MENUTYPE_FUNCTION:
-						  invoke(list->current->func);
 						  break;
 					default:
 						  break;
@@ -298,17 +298,17 @@ void mainMenuInit() {
 	  lcdInit(LCD_PORT);
 	  lcdSetBacklight(LCD_PORT, true);
 
-	  m = menuInit(mainMenu, "Reset Sensors", MENUTYPE_FUNCTION, 0, FUNC_RESET_SENSORS);
-	  m = menuInit(mainMenu, "Reset FUNC", MENUTYPE_FUNCTION, 0, FUNC_RESET_FUNCTIONALITY);
+	  m = menuInit(mainMenu, "Reset Sensors", MENUTYPE_CHOICE, 0, FUNC_RESET_SENSORS);
+	  m = menuInit(mainMenu, "Reset FUNC", MENUTYPE_CHOICE, 0, FUNC_RESET_FUNCTIONALITY);
 
 	  // Autonomous menu - has sub menu
 	  m = menuInit(mainMenu, "Auton Mode", MENUTYPE_SUB, 0, NULL);
 	  m->list = autonomousSubMenu;
 
 	  // Sub menu for autonomous selection
-	  menuInit(autonomousSubMenu, "LEFT P", MENUTYPE_FUNCTION, 0, FUNC_AUTON_LEFT_PRIMARY);
-	  menuInit(autonomousSubMenu, "RIGHT P", MENUTYPE_FUNCTION, 0, FUNC_AUTON_RIGHT_PRIMARY);
-	  menuInit(autonomousSubMenu, "PRGM SKILLS", MENUTYPE_FUNCTION, 0, FUNC_PROGRAMMING_SKILLS);
+	  menuInit(autonomousSubMenu, "LEFT P", MENUTYPE_CHOICE, 0, FUNC_AUTON_LEFT_PRIMARY);
+	  menuInit(autonomousSubMenu, "RIGHT P", MENUTYPE_CHOICE, 0, FUNC_AUTON_RIGHT_PRIMARY);
+	  menuInit(autonomousSubMenu, "PRGM SKILLS", MENUTYPE_CHOICE, 0, FUNC_PROGRAMMING_SKILLS);
 
 	  // An exit menu - Done and run code
 	  menuInit(mainMenu, "DONE", MENUTYPE_EXIT, 0, NULL);

@@ -1,6 +1,6 @@
 /**
  * @Date:   2016-10-22T14:32:24+11:00
-* @Last modified time: 2016-12-02T21:04:13+11:00
+* @Last modified time: 2016-12-02T22:47:47+11:00
  */
 #include "../include/main.h"
 
@@ -48,14 +48,16 @@ void initialize() {
 	  /**
 	   * Add motors to the slew handler
 	   */
+	  addMotor(MOTOR_LIFT_LEFT_BOT, MOTOR_SLOW_SLEW_RATE);
 	  addMotor(MOTOR_BASE_FRONT_LEFT, MOTOR_SLOW_SLEW_RATE);
 	  addMotor(MOTOR_BASE_FRONT_RIGHT, MOTOR_SLOW_SLEW_RATE);
-	  addMotor(MOTOR_BASE_BACK_LEFT, MOTOR_SLOW_SLEW_RATE);
+	  addMotor(MOTOR_LIFT_LEFT_TOP, MOTOR_SLOW_SLEW_RATE);
+	  addMotor(MOTOR_LIFT_LEFT_MID, MOTOR_SLOW_SLEW_RATE);
+	  addMotor(MOTOR_LIFT_RIGHT_TOP, MOTOR_SLOW_SLEW_RATE);
+	  addMotor(MOTOR_LIFT_RIGHT_MID, MOTOR_SLOW_SLEW_RATE);
 	  addMotor(MOTOR_BASE_BACK_RIGHT, MOTOR_SLOW_SLEW_RATE);
-	  addMotor(MOTOR_LIFT_LEFT_TOP, LIFT_SLOW_SLEW_RATE);
-	  addMotor(MOTOR_LIFT_LEFT_BOT, LIFT_SLOW_SLEW_RATE);
-	  addMotor(MOTOR_LIFT_RIGHT_TOP, LIFT_SLOW_SLEW_RATE);
-	  addMotor(MOTOR_LIFT_RIGHT_TOP, LIFT_SLOW_SLEW_RATE);
+	  addMotor(MOTOR_BASE_BACK_LEFT, MOTOR_SLOW_SLEW_RATE);
+	  addMotor(MOTOR_LIFT_RIGHT_BOT, MOTOR_SLOW_SLEW_RATE);
 	  /**
 	   * Init Encoders
 	   */

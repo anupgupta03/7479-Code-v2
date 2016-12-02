@@ -1,6 +1,6 @@
 /**
 * @Date:   2016-10-22T14:32:24+11:00
-* @Last modified time: 2016-12-02T19:15:18+11:00
+* @Last modified time: 2016-12-02T22:23:17+11:00
 */
 
 /** @file main.h
@@ -56,9 +56,9 @@
 #include "../include/OdometricLocalizer.h"
 #include "../include/TaskManagement.h"
 #include "../include/pidController.h"
-#include "../include/menuControl.h"
+// #include "../include/menuControl.h"
 #include "../include/statusCodes.h"
-#include "../include/invoke.h"
+// #include "../include/invoke.h"
 
 /*
  * Globals

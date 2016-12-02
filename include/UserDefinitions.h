@@ -1,6 +1,6 @@
 /**
 * @Date:   2016-10-22T14:32:57+11:00
-* @Last modified time: 2016-11-23T11:35:17+11:00
+* @Last modified time: 2016-12-02T22:22:48+11:00
 */
 
 #ifndef SRC_USERDEFINITIONS_H_
@@ -99,6 +99,11 @@ typedef enum t_Direction { LEFT, RIGHT } Direction;
 // Gyro Port (Analog)
 #define GYRO_PORT 1
 
-
+#define FUNC_NONE 0
+#define FUNC_AUTON_LEFT_PRIMARY 11
+#define FUNC_AUTON_RIGHT_PRIMARY 21
+#define FUNC_RESET_SENSORS 31
+#define FUNC_RESET_FUNCTIONALITY 32
+#define FUNC_PROGRAMMING_SKILLS 40
 
 #endif /* SRC_USERDEFINITIONS_H_ */

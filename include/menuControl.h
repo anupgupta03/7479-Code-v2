@@ -1,6 +1,6 @@
 /**
 * @Date:   2016-11-30T10:50:51+11:00
-* @Last modified time: 2016-12-02T20:29:16+11:00
+* @Last modified time: 2016-12-02T22:04:51+11:00
 */
 
 #ifndef H_MENUCONTROL_INCLUDED
@@ -16,7 +16,8 @@
 // Default for LCD line 2 display
 #define DEFAULT_LINE2 "<<            >>"
 #define SUBMENU_SELECT_TEXT "<<   SELECT   >>"
-#define EXIT_MENU_SELECT "<<     OK     >>"
+#define EXIT_MENU_SELECT    "<<     OK     >>"
+#define FUNCTION_MENU_TEXT  "<<   SELECT   >>"
 
 #define MAX_MEN_LISTS 4
 #define MAX_MENUS 10

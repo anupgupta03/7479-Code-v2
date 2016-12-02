@@ -1,6 +1,6 @@
 /**
  * @Date:   2016-10-22T14:32:57+11:00
-* @Last modified time: 2016-12-02T21:05:41+11:00
+* @Last modified time: 2016-12-02T23:00:09+11:00
  */
 
 #include "../include/main.h"
@@ -91,12 +91,12 @@ void setLiftRight(const int power) {
 	  switch (LIFT_SLEW_CONTROL_ENABLED) {
 	  case true:
 		    setMotorSpeed(MOTOR_LIFT_RIGHT_TOP, power);
-		    setMotorSpeed(MOTOR_LIFT_RIGHT_MID, -1 * power);
+		    setMotorSpeed(MOTOR_LIFT_RIGHT_MID, power);
 		    setMotorSpeed(MOTOR_LIFT_RIGHT_BOT, power);
 		    break;
 	  case false:
 		    motorSet(MOTOR_LIFT_RIGHT_TOP, power);
-		    motorSet(MOTOR_LIFT_RIGHT_MID, -1 * power);
+		    motorSet(MOTOR_LIFT_RIGHT_MID, power);
 		    motorSet(MOTOR_LIFT_RIGHT_BOT, power);
 		    break;
 	  }
@@ -131,7 +131,7 @@ void setDriveRight(const int power) {
 
 void setLift(const int power) {
 	  setLiftLeft(-1 * power);
-	  setLiftRight(-1 * (power + (sign(abs(encoderGet(enc_liftLeft)) - abs(encoderGet(enc_liftRight))) * power * 0.1)));
+	  setLiftRight(-1 * (power /* + (sign(abs(encoderGet(enc_liftLeft)) - abs(encoderGet(enc_liftRight))) * power * 0.1)*/));
 
 }
 
