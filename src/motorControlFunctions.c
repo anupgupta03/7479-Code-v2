@@ -1,6 +1,6 @@
 /**
  * @Date:   2016-10-22T14:32:57+11:00
-* @Last modified time: 2016-12-02T12:31:24+11:00
+ * @Last modified time: 2016-11-23T11:35:39+11:00
  */
 
 #include "../include/main.h"
@@ -187,6 +187,10 @@ void turnQuad(const int power, const int ticks) {
 
 void driveQuadPID(const int ticks){
 	  pidController pid;
+	  lcdClear(LCD_PORT);
+
+	  // int initialLeft = encoderGet(enc_baseLeft);
+	  // int initialRight = encoderGet(enc_baseRight);
 	  init_PID(&pid, 0.001, 0.00001, 0.3, 0.15, 0.15);
 	  float targetTicks = encoderGet(enc_baseLeft) + ticks;
 	  step_PID(&pid, encoderGet(enc_baseLeft), targetTicks);
@@ -197,6 +201,7 @@ void driveQuadPID(const int ticks){
 		    step_PID(&pid, encoderGet(enc_baseLeft), targetTicks);
 		    setDriveLeft(pid.out * 127);
 		    setDriveRight(pid.out * 127);
+		    lcdPrint(LCD_PORT, 1, "%d, %d", encoderGet(enc_baseLeft), encoderGet(enc_baseRight));
 
 		    delay(100);
 		    //  + (sign(((encoderGet(enc_baseLeft) - initialLeft) - (encoderGet(enc_baseRight) - initialRight))) * pid.out * 127 * 0.1))
@@ -205,20 +210,7 @@ void driveQuadPID(const int ticks){
 	  setDriveRight(0);
 }
 
-void turnGyroPID(const int deg) {
-	  pidController pid;
-	  init_PID(&pid, 0.001, 0.00001, 0.3, 0.15, 0.15);
-	  float targetHeading = gyroGet(mainGyro) + deg;
-	  step_PID(&pid, gyroGet(mainGyro), targetHeading);
-	  _Bool wasBad = abs(targetHeading - gyroGet(mainGyro)) > 5;
-	  while (abs(targetHeading - gyroGet(mainGyro)) > 5 || wasBad) {
-		    wasBad = abs(targetHeading - gyroGet(mainGyro)) > 5;
-		    step_PID(&pid, gyroGet(mainGyro), targetHeading);
-		    setDriveLeft(pid.out * 127);
-		    setDriveRight(-1 * pid.out * 127);
-
-		    delay(100);
-	  }
+void turnGyro(const int power, const int deg) {
 }
 
 void moveToPosition(OdometricLocalizer *odo, float xPos, float yPos){

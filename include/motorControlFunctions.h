@@ -1,6 +1,6 @@
 /**
 * @Date:   2016-10-22T14:32:57+11:00
-* @Last modified time: 2016-12-02T12:20:58+11:00
+* @Last modified time: 2016-11-23T11:24:55+11:00
 */
 
 
@@ -93,9 +93,10 @@ void turnTime(const int power, const int timeMs);
 void driveQuadPID(const int ticks);
 /**
  * Turns using the gyro sensor
+ * @param power Max power sent to the drive
  * @param deg   Number of degrees to turn
  */
-void turnGyroPID(const int deg);
+void turnGyro(const int power, const int deg);
 /**
  * Drives straight using encoders for a specified number of ticks
  * @param power Power sent to the drive
