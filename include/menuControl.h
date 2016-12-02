@@ -80,4 +80,63 @@ typedef enum _userControl {
   centerButtonDown
 } userControl;
 
+/**
+ * Create a new menu list
+ * @return menuList object that has been initialized
+ */
+menuList* menuListInit();
+/**
+ * Add a menu to a menu list
+ * @param  list menuList to append
+ * @param  m    menu object to append to the menuList
+ * @return      Returns an int as a success code
+ */
+int menuListAddMenu(menuList* list, menu* m);
+/**
+ * Initialize a menu and link into the menu list
+ * @param  list menuList object to append
+ * @param  name name of menu
+ * @param  type type of menu
+ * @param  max  max value of the menu
+ * @return      returns initialized menu object
+ */
+menu* menuInit(menuList* list, const char* name, int type, int max);
+/**
+ * Add one choice to a menu
+ * @param  m    menu object
+ * @param  name Name of the choice
+ * @return      List object
+ */
+clist* MenuAddChoice(menu* m, const char* name);
+/**
+ * Update the LCD display with the menu information
+ * @param m Menu to display
+ */
+void menuLcdUpdate(menu* m);
+/**
+ * Create a value display for the LCD line 2
+ * @param m Menu object to read from
+ */
+void menuCreateValueDisplay(menu* m);
+/**
+ * Create a choice display for the LCD line 2
+ * @param m menu object
+ */
+void menuCreateChoiceDisplay(menu* m);
+/**
+ * Update the text for the LCD line 2 based on the menu type
+ * @param m menu object
+ */
+void menuCreateDisplay(menu* m);
+/**
+ * Run a menu list
+ * @param  list list object
+ * @return      Status code
+ */
+int menuRun(menuList* list);
+/**
+ * Main init function for primary menu display
+ */
+void mainMenuInit();
+
 #endif  // H_MENUCONTROL_INCLUDED

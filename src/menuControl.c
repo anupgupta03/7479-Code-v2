@@ -1,6 +1,6 @@
 /**
  * @Date:   2016-11-30T10:50:44+11:00
-* @Last modified time: 2016-12-01T20:09:47+11:00
+ * @Last modified time: 2016-12-01T20:09:47+11:00
  */
 #include "../include/main.h"
 #include "../include/menuControl.h"
@@ -17,16 +17,8 @@ static int nl = 0;
 static int nm = 0;
 static int nc = 0;
 
-/*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*      Create a new menu list */
-/*                                                                             */
-/*-----------------------------------------------------------------------------*/
-
 menuList* menuListInit() {
-	  menuList* list;
-
-	  list = &(Lists[nl++]);
+	  menuList* list = &(Lists[nl++]);
 
 	  list->first = NULL;
 	  list->last = NULL;
@@ -260,6 +252,7 @@ void menuCreateDisplay(menu* m) {
 /*-----------------------------------------------------------------------------*/
 
 int menuRun(menuList* list) {
+
 	  bool done = false;
 	  int LcdButtons;
 	  userControl buttonState = initializeButton;
@@ -362,7 +355,7 @@ int menuRun(menuList* list) {
 /*                                                                             */
 /*-----------------------------------------------------------------------------*/
 
-void operatorControl() {
+void mainMenuInit() {
 	  menuList* mainMenu;
 	  menuList* autonomousSubMenu;
 	  menu* m;
@@ -401,15 +394,4 @@ void operatorControl() {
 	  lcdClear(LCD_PORT);
 
 	  lcdSetText(LCD_PORT, 1, "Code running");
-
-	  int time = 0;
-
-	  while (1) {
-		    char s[20];
-
-		    sprintf(s, "time %.1f", (float)time / 1000.0);
-		    lcdSetText(LCD_PORT, 2, s);
-		    time += 100;
-		    delay(100);
-	  }
 }
