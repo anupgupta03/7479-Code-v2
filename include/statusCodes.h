@@ -1,0 +1,13 @@
+/**
+* @Date:   2016-12-02T18:22:03+11:00
+* @Last modified time: 2016-12-02T18:28:19+11:00
+*/
+
+#ifndef H_STATUSCODES_INCLUDED
+#define H_STATUSCODES_INCLUDED
+
+#define RETURN_SUCCESS 0
+#define RETURN_FAILURE 1
+#define RETURN_NULL_POINTER 2
+
+#endif
