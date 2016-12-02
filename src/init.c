@@ -1,6 +1,6 @@
 /**
  * @Date:   2016-10-22T14:32:24+11:00
-* @Last modified time: 2016-11-23T11:24:49+11:00
+* @Last modified time: 2016-12-02T19:15:38+11:00
  */
 #include "../include/main.h"
 
@@ -11,6 +11,7 @@ Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
 TaskHandle joyControlHandle, solControlHandle, odoTaskHandle, slewControlHandle, watchdogHandle;
 OdometricLocalizer mainOdo;
 Gyro mainGyro;
+unsigned globalAutonFunction;
 
 /**
  * Runs pre-initialization code.
@@ -72,6 +73,11 @@ void initialize() {
 	   * Init Gyro
 	   */
 	  mainGyro = gyroInit(GYRO_PORT, 170);
+
+	  /**
+	   * Set default autonomous program
+	   */
+	  globalAutonFunction = FUNC_AUTON_LEFT_PRIMARY;
 
 	  lcdClear(LCD_PORT);
 	  lcdPrint(LCD_PORT, 1, "INIT Complete");

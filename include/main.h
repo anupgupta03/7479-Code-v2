@@ -1,6 +1,6 @@
 /**
 * @Date:   2016-10-22T14:32:24+11:00
-* @Last modified time: 2016-12-02T18:37:56+11:00
+* @Last modified time: 2016-12-02T19:15:18+11:00
 */
 
 /** @file main.h
@@ -58,6 +58,7 @@
 #include "../include/pidController.h"
 #include "../include/menuControl.h"
 #include "../include/statusCodes.h"
+#include "../include/invoke.h"
 
 /*
  * Globals
@@ -68,6 +69,7 @@ extern _Bool LIFT_SLEW_CONTROL_ENABLED;
 extern Encoder enc_baseLeft, enc_baseRight, enc_liftLeft, enc_liftRight;
 extern TaskHandle joyControlHandle, solControlHandle, odoTaskHandle,  slewControlHandle, watchdogHandle;
 extern OdometricLocalizer mainOdo;
+extern unsigned globalAutonFunction;
 
 // Allow usage of this file in C++ programs
 #ifdef __cplusplus

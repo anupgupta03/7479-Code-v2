@@ -1,13 +1,12 @@
 /**
  * @Date:   2016-11-30T10:50:44+11:00
- * @Last modified time: 2016-12-01T20:09:47+11:00
+* @Last modified time: 2016-12-02T19:28:05+11:00
  */
 #include "../include/main.h"
 #include "../include/menuControl.h"
 #include "string.h"
 
 // Storage for our menus, choices and lists
-// We use this instead of dynamic memory allocation as it is not available
 menuList Lists[MAX_MEN_LISTS];
 menu Menus[MAX_MENUS];
 clist MenuChoices[MAX_CHOICES];
@@ -26,12 +25,6 @@ menuList* menuListInit() {
 
 	  return (list);
 }
-
-/*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*      Add a menu to a menu list */
-/*                                                                             */
-/*-----------------------------------------------------------------------------*/
 
 int menuListAddMenu(menuList* list, menu* m) {
 	  menu* TopMenu;
@@ -77,13 +70,7 @@ int menuListAddMenu(menuList* list, menu* m) {
 	  return (list->num);
 }
 
-/*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*  Initialize a menu and link into the menu list */
-/*                                                                             */
-/*-----------------------------------------------------------------------------*/
-
-menu* menuInit(menuList* list, const char* name, int type, int max) {
+menu* menuInit(menuList* list, const char* name, int type, int max, unsigned func) {
 	  menu* m;
 
 	  // We have no malloc so use allocate from an array
@@ -129,12 +116,6 @@ menu* menuInit(menuList* list, const char* name, int type, int max) {
 	  return (m);
 }
 
-/*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*  Add one choice to a menu */
-/*                                                                             */
-/*-----------------------------------------------------------------------------*/
-
 clist* MenuAddChoice(menu* m, const char* name) {
 	  clist* c;
 	  clist* end;
@@ -173,33 +154,15 @@ clist* MenuAddChoice(menu* m, const char* name) {
 	  return (c);
 }
 
-/*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*      Update the LCD display with the menu information */
-/*                                                                             */
-/*-----------------------------------------------------------------------------*/
-
 void menuLcdUpdate(menu* m) {
 	  lcdClear(LCD_PORT);
 	  lcdPrint(LCD_PORT, 1, m->lcd_line_1);
 	  lcdPrint(LCD_PORT, 2, m->lcd_line_2);
 }
 
-/*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*      Create a value display for the LCD line 2 */
-/*                                                                             */
-/*-----------------------------------------------------------------------------*/
-
 void menuCreateValueDisplay(menu* m) {
 	  sprintf(&(m->lcd_line_2[0]), "<<    %04d    >>", m->value);
 }
-
-/*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*      Create a choice display for the LCD line 2 */
-/*                                                                             */
-/*-----------------------------------------------------------------------------*/
 
 void menuCreateChoiceDisplay(menu* m) {
 	  int i;
@@ -232,24 +195,12 @@ void menuCreateChoiceDisplay(menu* m) {
 		    m->lcd_line_2[2 + (6 - (len + 1) / 2) + i] = c->name[i];
 }
 
-/*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*      Update the text for the LCD line 2 based on the menu type */
-/*                                                                             */
-/*-----------------------------------------------------------------------------*/
-
 void menuCreateDisplay(menu* m) {
 	  if (m->menu_type == MENUTYPE_VALUE)
 		    menuCreateValueDisplay(m);
 	  else if (m->menu_type == MENUTYPE_CHOICE)
 		    menuCreateChoiceDisplay(m);
 }
-
-/*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*      Run a menu list */
-/*                                                                             */
-/*-----------------------------------------------------------------------------*/
 
 int menuRun(menuList* list) {
 
@@ -278,7 +229,6 @@ int menuRun(menuList* list) {
 			      // Check left button
 			      if (LcdButtons & LCD_BTN_LEFT) {
 					buttonState = leftButtonDown;
-
 					// previous menu
 					if (list->current->prev != NULL) list->current = list->current->prev;
 			      }
@@ -286,7 +236,6 @@ int menuRun(menuList* list) {
 			      // Check right button
 			      if (LcdButtons & LCD_BTN_RIGHT) {
 					buttonState = rightButtonDown;
-
 					// next menu
 					if (list->current->next != NULL) list->current = list->current->next;
 			      }
@@ -294,30 +243,22 @@ int menuRun(menuList* list) {
 			      // Check center button
 			      if (LcdButtons & LCD_BTN_CENTER) {
 					buttonState = centerButtonDown;
-
 					switch (list->current->menu_type) {
 					case MENUTYPE_EXIT:
 						  // An exit menu - we are done
 						  done = true;
 						  break;
 					case MENUTYPE_VALUE:
-						  // simle menu with a variable
-
 						  // increase value
 						  list->current->value++;
-
 						  // check for max and wrap around
-						  if (list->current->value > list->current->max_value)
-							    list->current->value = 0;
+						  if (list->current->value > list->current->max_value) list->current->value = 0;
 						  break;
 					case MENUTYPE_CHOICE:
-						  // Menu with a list of choices
 						  // value is used as an index
 						  list->current->value++;
-
 						  // check for end of choice list and wrap
-						  if (list->current->value >= list->current->cnum)
-							    list->current->value = 0;
+						  if (list->current->value >= list->current->cnum) list->current->value = 0;
 						  break;
 					case MENUTYPE_SUB:
 						  // selection using a sub menu
@@ -325,11 +266,12 @@ int menuRun(menuList* list) {
 							    // recursively enter menu run for sub menu
 							    menuRun(list->current->list);
 							    // now change the menu name to match the selection
-							    strcpy(list->current->lcd_line_1,
-							           list->current->list->current->lcd_line_1);
+							    strcpy(list->current->lcd_line_1, list->current->list->current->lcd_line_1);
 						  }
 						  break;
-
+					case MENUTYPE_FUNCTION:
+						  invoke(list->current->func);
+						  break;
 					default:
 						  break;
 					}
@@ -337,7 +279,7 @@ int menuRun(menuList* list) {
 			      break;
 
 		    default:
-			      // why are we here ??
+			      // why are we even here ??
 			      buttonState = noButton;
 			      break;
 		    }
@@ -349,43 +291,30 @@ int menuRun(menuList* list) {
 	  return (0);
 }
 
-/*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*      Demo code */
-/*                                                                             */
-/*-----------------------------------------------------------------------------*/
-
 void mainMenuInit() {
-	  menuList* mainMenu;
-	  menuList* autonomousSubMenu;
+	  menuList* mainMenu = menuListInit();
+	  menuList* autonomousSubMenu = menuListInit();
 	  menu* m;
 
 	  lcdInit(LCD_PORT);
 	  lcdSetBacklight(LCD_PORT, true);
 
-	  mainMenu = menuListInit();
-	  autonomousSubMenu = menuListInit();
-
 	  // Alliance selection menu
-	  m = menuInit(mainMenu, "Alliance", MENUTYPE_CHOICE, 0);
-	  MenuAddChoice(m, "RED");
-	  MenuAddChoice(m, "BLUE");
+	  m = menuInit(mainMenu, "Start Tile", MENUTYPE_CHOICE, 0, FUNC_NONE);
+	  MenuAddChoice(m, "LEFT");
+	  MenuAddChoice(m, "RIGHT");
 
 	  // Autonomous menu - has sub menu
-	  m = menuInit(mainMenu, "Auto Wall 1", MENUTYPE_SUB, 0);
+	  m = menuInit(mainMenu, "Auton Mode", MENUTYPE_SUB, 0, FUNC_NONE);
 	  m->list = autonomousSubMenu;
 
 	  // Sub menu for autonomous selection
-	  menuInit(autonomousSubMenu, "Auto Special", MENUTYPE_EXIT, 0);
-	  menuInit(autonomousSubMenu, "Auto Floor A", MENUTYPE_EXIT, 0);
-	  menuInit(autonomousSubMenu, "Auto Wall 2", MENUTYPE_EXIT, 0);
-	  menuInit(autonomousSubMenu, "Auto Wall 1", MENUTYPE_EXIT, 0);
-
-	  // some nondescript variable with a maximum value of 10
-	  menuInit(mainMenu, "Sensitivity", MENUTYPE_VALUE, 10);
+	  menuInit(autonomousSubMenu, "LEFT P", MENUTYPE_FUNCTION, 0, FUNC_AUTON_LEFT_PRIMARY);
+	  menuInit(autonomousSubMenu, "RIGHT P", MENUTYPE_FUNCTION, 0, FUNC_AUTON_RIGHT_PRIMARY);
+	  menuInit(autonomousSubMenu, "PRGM SKILLS", MENUTYPE_FUNCTION, 0, FUNC_PROGRAMMING_SKILLS);
 
 	  // An exit menu - Done and run code
-	  menuInit(mainMenu, "Run Code", MENUTYPE_EXIT, 0);
+	  menuInit(mainMenu, "Exit..", MENUTYPE_EXIT, 0, FUNC_NONE);
 
 	  // Start menus
 	  menuRun(mainMenu);

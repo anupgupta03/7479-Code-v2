@@ -1,6 +1,6 @@
 /**
  * @Date:   2016-10-22T14:32:24+11:00
- * @Last modified time: 2016-11-23T11:35:31+11:00
+* @Last modified time: 2016-12-02T19:16:11+11:00
  */
 
 /*
@@ -8,7 +8,7 @@
  */
 #include "main.h"
 
-void normalAutonomous(){
+void autonLeftPrimary(){
 	  driveQuadPID(1200);
 	  // turnTime(60, 230);
 	  // delay(500);
@@ -24,7 +24,7 @@ void normalAutonomous(){
 	  // driveTime(-127, -127, 400);
 }
 
-void programmingSkills() {
+void autonRightPrimary() {
 }
 
 /*

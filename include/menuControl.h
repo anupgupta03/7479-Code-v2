@@ -1,6 +1,6 @@
 /**
 * @Date:   2016-11-30T10:50:51+11:00
-* @Last modified time: 2016-12-01T20:09:41+11:00
+* @Last modified time: 2016-12-02T19:20:51+11:00
 */
 
 #ifndef H_MENUCONTROL_INCLUDED
@@ -10,6 +10,7 @@
 #define MENUTYPE_VALUE 0
 #define MENUTYPE_CHOICE 1
 #define MENUTYPE_SUB 2
+#define MENUTYPE_FUNCTION 3
 #define MENUTYPE_EXIT 99
 
 // Default for LCD line 2 display
@@ -51,6 +52,7 @@ typedef struct _menu {
   int value;
   // maximum value of a "value" menu
   int max_value;
+  unsigned func;
 
   // list of choices
   int cnum;
@@ -100,7 +102,7 @@ int menuListAddMenu(menuList* list, menu* m);
  * @param  max  max value of the menu
  * @return      returns initialized menu object
  */
-menu* menuInit(menuList* list, const char* name, int type, int max);
+menu* menuInit(menuList* list, const char* name, int type, int max, unsigned func);
 /**
  * Add one choice to a menu
  * @param  m    menu object
