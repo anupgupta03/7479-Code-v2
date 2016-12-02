@@ -1,6 +1,6 @@
 /**
  * @Date:   2016-10-22T14:32:57+11:00
-* @Last modified time: 2016-12-02T12:25:57+11:00
+* @Last modified time: 2016-12-02T12:31:24+11:00
  */
 
 #include "../include/main.h"
@@ -215,7 +215,7 @@ void turnGyroPID(const int deg) {
 		    wasBad = abs(targetHeading - gyroGet(mainGyro)) > 5;
 		    step_PID(&pid, gyroGet(mainGyro), targetHeading);
 		    setDriveLeft(pid.out * 127);
-		    setDriveRight(pid.out * 127);
+		    setDriveRight(-1 * pid.out * 127);
 
 		    delay(100);
 	  }
