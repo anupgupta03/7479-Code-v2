@@ -1,6 +1,6 @@
 /**
  * @Date:   2016-10-22T14:32:24+11:00
-* @Last modified time: 2016-12-02T19:15:38+11:00
+* @Last modified time: 2016-12-02T21:04:13+11:00
  */
 #include "../include/main.h"
 
@@ -42,8 +42,8 @@ void initialize() {
 	  lcdClear(LCD_PORT);
 	  lcdSetBacklight(LCD_PORT, true);
 
-	  lcdPrint(LCD_PORT, 1, " ROBOT STARTING ");
-	  lcdPrint(LCD_PORT, 2, "  PLEASE WAIT   ");
+	  lcdPrint(LCD_PORT, 1, "  INITIALIZING  ");
+	  lcdPrint(LCD_PORT, 2, " HILLCREST 7479 ");
 
 	  /**
 	   * Add motors to the slew handler
@@ -77,10 +77,7 @@ void initialize() {
 	  /**
 	   * Set default autonomous program
 	   */
-	  globalAutonFunction = FUNC_AUTON_LEFT_PRIMARY;
-
-	  lcdClear(LCD_PORT);
-	  lcdPrint(LCD_PORT, 1, "INIT Complete");
+	  globalAutonFunction = FUNC_AUTON_RIGHT_PRIMARY;
 
 	  return;
 }

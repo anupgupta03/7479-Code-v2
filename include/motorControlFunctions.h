@@ -1,6 +1,6 @@
 /**
 * @Date:   2016-10-22T14:32:57+11:00
-* @Last modified time: 2016-11-23T11:24:55+11:00
+* @Last modified time: 2016-12-02T20:54:40+11:00
 */
 
 
@@ -46,6 +46,18 @@ float cJoyThreshold(int input);
  * @param port Port number to toggle
  */
 void toggleDigitalPort(unsigned port);
+/**
+ * Starts all tasks and assigns their handles
+ */
+void startAllTasks();
+/**
+ * Resets all Sensors to Zero
+ */
+void resetSensors();
+/**
+ * Resets all tasks and clears all values and variables
+ */
+void resetFunctionality();
 /**
  * Sets the left side of the lift to a power
  * @param power Power to set the lift side to

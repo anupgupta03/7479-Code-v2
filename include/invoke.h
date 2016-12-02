@@ -1,6 +1,6 @@
 /**
 * @Date:   2016-12-02T19:02:13+11:00
-* @Last modified time: 2016-12-02T19:23:53+11:00
+* @Last modified time: 2016-12-02T20:44:26+11:00
 */
 
 #ifndef H_INVOKE_INCLUDED
@@ -21,13 +21,9 @@
 #define FUNC_AUTON_LEFT_PRIMARY 11
 #define FUNC_AUTON_RIGHT_PRIMARY 21
 #define FUNC_RESET_SENSORS 31
+#define FUNC_RESET_FUNCTIONALITY 32
 #define FUNC_PROGRAMMING_SKILLS 40
 
-/**
- * Sets global autonomous function based on input
- * @param func Function ID
- */
-void setAutonomousProgram(unsigned func);
 /**
  * Invokes a function based on input value
  * @param func Function ID

@@ -1,6 +1,6 @@
 /**
  * @Date:   2016-10-22T14:32:57+11:00
- * @Last modified time: 2016-11-23T11:35:39+11:00
+* @Last modified time: 2016-12-02T21:05:41+11:00
  */
 
 #include "../include/main.h"
@@ -28,6 +28,48 @@ float cJoyThreshold(int input) {
 
 void toggleDigitalPort(unsigned port) {
 	  digitalWrite(port, (digitalRead(port) == 1 ? 0 : 1));
+}
+
+void startAllTasks(){
+	  joyControlHandle = taskCreate(joystickControlTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 1));
+	  solControlHandle = taskCreate(solenoidControlTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+	  odoTaskHandle = taskCreate(odoUpdateTask, 1024, NULL, (TASK_PRIORITY_HIGHEST - 3));
+	  slewControlHandle = taskCreate(slewrateControl_task, 1024, NULL, (TASK_PRIORITY_HIGHEST - 1));
+	  watchdogHandle = taskCreate(watchDogManagement, 64, NULL, TASK_PRIORITY_LOWEST + 1);
+}
+
+void resetSensors(){
+	  encoderReset(enc_baseLeft);
+	  encoderReset(enc_baseRight);
+	  encoderReset(enc_liftLeft);
+	  encoderReset(enc_liftRight);
+}
+
+void resetFunctionality(){
+	  taskDelete(watchdogHandle);
+	  taskDelete(joyControlHandle);
+	  taskDelete(solControlHandle);
+	  taskDelete(odoTaskHandle);
+	  taskDelete(slewControlHandle);
+	  digitalWrite(SOL_LEFT, 0);
+	  digitalWrite(SOL_RIGHT, 0);
+	  digitalWrite(SOL_FLIP, 0);
+	  LIFT_SLEW_CONTROL_ENABLED = false;
+
+	  while(encoderGet(enc_liftLeft) > LIFT_LOWER_LIMIT) {
+		    setLift(-63);
+	  }
+	  setLift(0);
+	  LIFT_SLEW_CONTROL_ENABLED = true;
+	  delay(500);
+	  encoderReset(enc_baseLeft);
+	  encoderReset(enc_baseRight);
+	  encoderReset(enc_liftLeft);
+	  encoderReset(enc_liftRight);
+	  gyroReset(mainGyro);
+	  setPos(&mainOdo, 0, 0, 0);
+
+	  startAllTasks();
 }
 
 void setLiftLeft(const int power) {

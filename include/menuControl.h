@@ -1,6 +1,6 @@
 /**
 * @Date:   2016-11-30T10:50:51+11:00
-* @Last modified time: 2016-12-02T19:20:51+11:00
+* @Last modified time: 2016-12-02T20:29:16+11:00
 */
 
 #ifndef H_MENUCONTROL_INCLUDED
@@ -114,22 +114,22 @@ clist* MenuAddChoice(menu* m, const char* name);
  * Update the LCD display with the menu information
  * @param m Menu to display
  */
-void menuLcdUpdate(menu* m);
+int menuLcdUpdate(menu* m);
 /**
  * Create a value display for the LCD line 2
  * @param m Menu object to read from
  */
-void menuCreateValueDisplay(menu* m);
+int menuCreateValueDisplay(menu* m);
 /**
  * Create a choice display for the LCD line 2
  * @param m menu object
  */
-void menuCreateChoiceDisplay(menu* m);
+int menuCreateChoiceDisplay(menu* m);
 /**
  * Update the text for the LCD line 2 based on the menu type
  * @param m menu object
  */
-void menuCreateDisplay(menu* m);
+int menuCreateDisplay(menu* m);
 /**
  * Run a menu list
  * @param  list list object

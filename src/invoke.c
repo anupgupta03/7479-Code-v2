@@ -1,22 +1,30 @@
 /**
  * @Date:   2016-12-02T19:01:58+11:00
-* @Last modified time: 2016-12-02T19:23:44+11:00
+* @Last modified time: 2016-12-02T20:43:42+11:00
  */
 #include "../include/main.h"
 #include "../include/invoke.h"
-void setAutonomousProgram(unsigned func){
 
-}
 
 void invoke(unsigned func){
 	  switch (func) {
 	  case FUNC_NONE:
+		    return;
 		    break;
 	  case FUNC_AUTON_LEFT_PRIMARY:
+		    globalAutonFunction = FUNC_AUTON_LEFT_PRIMARY;
 		    break;
 	  case FUNC_AUTON_RIGHT_PRIMARY:
+		    globalAutonFunction = FUNC_AUTON_RIGHT_PRIMARY;
+		    break;
+	  case FUNC_PROGRAMMING_SKILLS:
+		    globalAutonFunction = FUNC_PROGRAMMING_SKILLS;
 		    break;
 	  case FUNC_RESET_SENSORS:
+		    resetSensors();
+		    break;
+	  case FUNC_RESET_FUNCTIONALITY:
+		    resetFunctionality();
 		    break;
 	  default:
 		    break;

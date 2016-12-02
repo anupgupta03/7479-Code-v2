@@ -1,6 +1,6 @@
 /**
  * @Date:   2016-11-30T10:50:44+11:00
-* @Last modified time: 2016-12-02T19:28:05+11:00
+* @Last modified time: 2016-12-02T21:02:26+11:00
  */
 #include "../include/main.h"
 #include "../include/menuControl.h"
@@ -30,11 +30,7 @@ int menuListAddMenu(menuList* list, menu* m) {
 	  menu* TopMenu;
 	  menu* EndMenu;
 
-	  // check for valid list
-	  if (list == NULL) return (-1);
-
-	  // check for valid menu
-	  if (m == NULL) return (-2);
+	  if (list == NULL || m == NULL) return NULL;
 
 	  if (list->num == 0) {
 		    // first entry
@@ -121,7 +117,7 @@ clist* MenuAddChoice(menu* m, const char* name) {
 	  clist* end;
 
 	  // check for null pointer
-	  if (m == NULL) return (NULL);
+	  if (m == NULL) return NULL;
 
 	  // We have no malloc so use allocate from an array
 	  c = &(MenuChoices[nc++]);
@@ -154,29 +150,27 @@ clist* MenuAddChoice(menu* m, const char* name) {
 	  return (c);
 }
 
-void menuLcdUpdate(menu* m) {
+int menuLcdUpdate(menu* m) {
+	  if (m == NULL) return NULL;
 	  lcdClear(LCD_PORT);
 	  lcdPrint(LCD_PORT, 1, m->lcd_line_1);
 	  lcdPrint(LCD_PORT, 2, m->lcd_line_2);
+	  return RETURN_SUCCESS;
 }
 
-void menuCreateValueDisplay(menu* m) {
+int menuCreateValueDisplay(menu* m) {
+	  if (m == NULL) return NULL;
 	  sprintf(&(m->lcd_line_2[0]), "<<    %04d    >>", m->value);
+	  return RETURN_SUCCESS;
 }
 
-void menuCreateChoiceDisplay(menu* m) {
-	  int i;
+int menuCreateChoiceDisplay(menu* m) {
+	  int i, len;
 	  clist* c;
-	  int len;
 
-	  // NULL pointer checks
-	  if (m == NULL) return;
-
-	  // Find choice in list
-	  if ((c = m->cfirst) == NULL) return;
+	  if (m == NULL || (c = m->cfirst) == NULL) return NULL;
 
 	  // move through list to find indexd choice
-	  // inefficient for a large number of choices but ok for this demo
 	  for (i = 0; i < m->value; i++) {
 		    if (c->next != NULL) c = c->next;
 	  }
@@ -191,19 +185,24 @@ void menuCreateChoiceDisplay(menu* m) {
 	  if (len > 12) len = 12;
 
 	  // overlay choice to display
-	  for (i = 0; i < len; i++)
+	  for (i = 0; i < len; i++) {
 		    m->lcd_line_2[2 + (6 - (len + 1) / 2) + i] = c->name[i];
+
+	  }
+	  return RETURN_SUCCESS;
 }
 
-void menuCreateDisplay(menu* m) {
+int menuCreateDisplay(menu* m) {
+	  if (m == NULL) return NULL;
 	  if (m->menu_type == MENUTYPE_VALUE)
 		    menuCreateValueDisplay(m);
 	  else if (m->menu_type == MENUTYPE_CHOICE)
 		    menuCreateChoiceDisplay(m);
+	  return RETURN_SUCCESS;
 }
 
 int menuRun(menuList* list) {
-
+	  if (list == NULL) return NULL;
 	  bool done = false;
 	  int LcdButtons;
 	  userControl buttonState = initializeButton;
@@ -288,7 +287,7 @@ int menuRun(menuList* list) {
 		    delay(50);
 	  }
 
-	  return (0);
+	  return RETURN_SUCCESS;
 }
 
 void mainMenuInit() {
@@ -299,13 +298,11 @@ void mainMenuInit() {
 	  lcdInit(LCD_PORT);
 	  lcdSetBacklight(LCD_PORT, true);
 
-	  // Alliance selection menu
-	  m = menuInit(mainMenu, "Start Tile", MENUTYPE_CHOICE, 0, FUNC_NONE);
-	  MenuAddChoice(m, "LEFT");
-	  MenuAddChoice(m, "RIGHT");
+	  m = menuInit(mainMenu, "Reset Sensors", MENUTYPE_FUNCTION, 0, FUNC_RESET_SENSORS);
+	  m = menuInit(mainMenu, "Reset FUNC", MENUTYPE_FUNCTION, 0, FUNC_RESET_FUNCTIONALITY);
 
 	  // Autonomous menu - has sub menu
-	  m = menuInit(mainMenu, "Auton Mode", MENUTYPE_SUB, 0, FUNC_NONE);
+	  m = menuInit(mainMenu, "Auton Mode", MENUTYPE_SUB, 0, NULL);
 	  m->list = autonomousSubMenu;
 
 	  // Sub menu for autonomous selection
@@ -314,7 +311,7 @@ void mainMenuInit() {
 	  menuInit(autonomousSubMenu, "PRGM SKILLS", MENUTYPE_FUNCTION, 0, FUNC_PROGRAMMING_SKILLS);
 
 	  // An exit menu - Done and run code
-	  menuInit(mainMenu, "Exit..", MENUTYPE_EXIT, 0, FUNC_NONE);
+	  menuInit(mainMenu, "DONE", MENUTYPE_EXIT, 0, NULL);
 
 	  // Start menus
 	  menuRun(mainMenu);
@@ -322,5 +319,5 @@ void mainMenuInit() {
 	  // menu system done so do something
 	  lcdClear(LCD_PORT);
 
-	  lcdSetText(LCD_PORT, 1, "Code running");
+	  lcdSetText(LCD_PORT, 1, "Exited Menu");
 }
